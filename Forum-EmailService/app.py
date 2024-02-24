@@ -1,0 +1,22 @@
+from flask import Flask
+import json
+from routes.email_blueprint import email_blueprint
+
+app = Flask(__name__)
+
+with open('config.json') as f:
+        config = json.load(f)
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'  
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'azure.hrj@gmail.com'  
+app.config['MAIL_PASSWORD'] = config["APP_PASSWORD"]
+app.config['MAIL_DEFAULT_SENDER'] = 'azure.hrj@gmail.com'  
+
+
+app.register_blueprint(email_blueprint)
+
+if __name__ == '__main__':
+    app.run(port=8000,debug=True)
