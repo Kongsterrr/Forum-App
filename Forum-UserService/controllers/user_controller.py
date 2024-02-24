@@ -42,5 +42,18 @@ class UserLoginView(MethodView):
         return jsonify({'token': token}), 200
 
 
+class UserProfileView(MethodView):
+    def __init__(self):
+        self.user_service = UserService()
+
+    @token_required
+    def get(self, current_user, user_id):
+        user_profile = self.user_service.get_user_profile(user_id)
+        if user_profile:
+            return jsonify(user_profile), 200
+        else:
+            return jsonify({"message": "User not found"}), 404
+
+
 
 

@@ -20,7 +20,7 @@ def token_required(f):
 
         try:
             data = jwt.decode(token[7:], config.JWT_SECURITY_KEY, algorithms=["HS256"])
-            current_user = UserRepository().get_user(data['user_id'])
+            current_user = UserRepository().get_user_by_Id(data['user_id'])
         except:
             raise UnauthorizedException('Token is invalid')
 
