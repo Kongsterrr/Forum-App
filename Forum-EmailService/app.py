@@ -1,6 +1,7 @@
 from flask import Flask
 import json
 from routes.email_blueprint import email_blueprint
+from services.email_service import EmailService
 
 app = Flask(__name__)
 
@@ -17,6 +18,9 @@ app.config['MAIL_DEFAULT_SENDER'] = 'azure.hrj@gmail.com'
 
 
 app.register_blueprint(email_blueprint)
+
+with app.app_context():
+    email_service = EmailService(app)
 
 if __name__ == '__main__':
     app.run(port=8000,debug=True)
