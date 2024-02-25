@@ -38,8 +38,9 @@ class UserLoginView(MethodView):
 
     def post(self):
         data = request.get_json()
-        token = self.user_service.get_user_token(data['email'], data['password'])
-        return jsonify({'token': token}), 200
+        token, user_type = self.user_service.get_user_token_and_type(data['email'], data['password'])
+
+        return jsonify({'token': token, 'type': user_type}), 200
 
 
 class UserProfileView(MethodView):

@@ -15,4 +15,5 @@ class User(Base):
     active = Column(Boolean, default=True)
     dateJoined = Column(DateTime, default=func.now())
     profileImageURL = Column(String(128))
+    type = Column(String(80), default="Normal")
 
