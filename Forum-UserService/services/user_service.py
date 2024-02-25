@@ -33,13 +33,13 @@ class UserService:
         except Exception as e:
             raise
 
-    def get_user_token(self, email: str, password: str) -> Optional[str]:
-        user: User = self.user_repository.get_user_by_email(email)
+    def get_user_token_and_type(self, email: str, password: str):
+        user = self.user_repository.get_user_by_email(email)
         if user and password:
             token: str = jwt.encode(
                 {'user_id': user.userId, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60)},
                 config.JWT_SECURITY_KEY, "HS256")
-            return token
+            return token, user.type
 
         raise NotFoundException('User not found')
 
