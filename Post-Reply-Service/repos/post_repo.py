@@ -59,3 +59,30 @@ class PostRepository:
             db.commit()
             return True, "Post archived status updated."
         return False, "Post not found or insufficient permissions."
+
+    # For Admin
+    def recover_deleted_post_to_published(self, post_id):
+        post = db.query(Post).filter_by(postId=post_id).first()
+        if post and post.status == "Deleted":
+            post.status = 'Published'
+            db.commit()
+            return True, "Recover Delete Post to Published"
+        return False, "Post not found or insufficient permissions."
+
+    # For Admin
+    def mark_post_to_banned(self, post_id):
+        post = db.query(Post).filter_by(postId=post_id).first()
+        if post and post.status == "Published":
+            post.status = 'Banned'
+            db.commit()
+            return True, "Successfully Banned Post"
+        return False, "Post not found or insufficient permissions."
+
+    # For Admin
+    def unbanned_post_to_published(self, post_id):
+        post = db.query(Post).filter_by(postId=post_id).first()
+        if post and post.status == "Banned":
+            post.status = 'Published'
+            db.commit()
+            return True, "Successfully UnBanned Post to Published"
+        return False, "Post not found or insufficient permissions."

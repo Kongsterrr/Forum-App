@@ -64,4 +64,28 @@ class PostService:
         except Exception as e:
             raise NotFoundException('Post Archived Failed')
 
+    # For Admin
+    def recover_post(self, post_id):
+        try:
+            success, message = self.post_repository.recover_deleted_post_to_published(post_id)
+            return success, message
+        except Exception as e:
+            raise NotFoundExcept
+
+    # For Admin
+    def ban_post(self, post_id):
+        try:
+            success, message = self.post_repository.mark_post_to_banned(post_id)
+            return success, message
+        except Exception as e:
+            raise NotFoundExcept
+
+    # For Admin
+    def unbanned_post(self, post_id):
+        try:
+            success, message = self.post_repository.unbanned_post_to_published(post_id)
+            return success, message
+        except Exception as e:
+            raise NotFoundExcept
+
 

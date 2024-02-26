@@ -27,6 +27,7 @@ class PostDetailView(MethodView):
 class PostCreateView(MethodView):
     def __init__(self):
         self.post_service = PostService()
+
     # @token_required
     def post(self):
         post_data = request.get_json()
@@ -39,18 +40,21 @@ class PostCreateView(MethodView):
 
 class PublishPostView(MethodView):
     # @token_required
+    # def put(self, post_id, current_user):
+    # success, message = PostService().publish_post(post_id, current_user.user_id)
+    # return jsonify({'message': message}), 200 if success else 400
     def put(self, post_id):
-        # user_id = request.user_id
-        # success, message = PostService().hide_post(post_id, user_id)
         success, message = PostService().publish_post(post_id)
 
         return jsonify({'message': message}), 200 if success else 400
 
+
 class HidePostView(MethodView):
     # @token_required
+    # def put(self, post_id, current_user):
+    # success, message = PostService().hide_post(post_id, current_user.user_id)
+    # return jsonify({'message': message}), 200 if success else 400
     def put(self, post_id):
-        # user_id = request.user_id
-        # success, message = PostService().hide_post(post_id, user_id)
         success, message = PostService().hide_post(post_id)
 
         return jsonify({'message': message}), 200 if success else 400
@@ -58,19 +62,44 @@ class HidePostView(MethodView):
 
 class DeletePostView(MethodView):
     # @token_required
+    # def put(self, post_id, current_user):
+    # success, message = PostService().delete_post(post_id, current_user.user_id)
+    # return jsonify({'message': message}), 200 if success else 400
     def put(self, post_id):
-        # user_id = request.user_id
-        # success, message = PostService().delete_post(post_id, user_id)
         success, message = PostService().delete_post(post_id)
         return jsonify({'message': message}), 200 if success else 400
 
 
 class ArchivePostView(MethodView):
     # @token_required
+    # def put(self, post_id, current_user):
+    # success, message = PostService().archive_post(post_id, current_user.user_id)
+    # return jsonify({'message': message}), 200 if success else 400
     def put(self, post_id):
-        # user_id = request.user_id
-        # success, message = PostService().archive_post(post_id, user_id)
         success, message = PostService().archive_post(post_id)
 
         return jsonify({'message': message}), 200 if success else 400
 
+
+# For Admin
+class RecoverDeleteToPublishedPostView(MethodView):
+    def put(self, post_id):
+        success, message = PostService().recover_post(post_id)
+
+        return jsonify({'message': message}), 200 if success else 400
+
+
+# For Admin
+class BannedPostView(MethodView):
+    def put(self, post_id):
+        success, message = PostService().ban_post(post_id)
+
+        return jsonify({'message': message}), 200 if success else 400
+
+
+# For Admin
+class UnBannedPostView(MethodView):
+    def put(self, post_id):
+        success, message = PostService().unbanned_post(post_id)
+
+        return jsonify({'message': message}), 200 if success else 400
