@@ -21,7 +21,8 @@ class EmailService:
 
     def send_verification_code(self, ch, method, properties, body):
         data = body.decode('utf-8').split(',')
-        receiver_email = data[0]
+        user_id = data[0]
+        receiver_email = data[1]
 
         verification_code = self.generate_verification_code()
         msg = Message('Verification Code', sender="azure.hrj@gmail.com", recipients=[receiver_email])
@@ -30,7 +31,7 @@ class EmailService:
         try:
             self.mail.send(msg)
             print('Verification code sent successfully')
-            message_to_queue = f'{receiver_email},{verification_code}'
+            message_to_queue = f'{user_id},{verification_code}'
             self.channel.basic_publish(exchange='', routing_key='verification_code_queue', body=message_to_queue)
             print('Verification code published to verification_code_queue')
         except Exception as e:
