@@ -37,7 +37,7 @@ class AuthService:
 
     def send_email_to_queue(self, receiver_email, user_id):
 
-        message = f'{user_id}{receiver_email}'
+        message = f'{user_id},{receiver_email}'
         self.channel.basic_publish(exchange='', routing_key='email_queue', body=message)
         print("Message sent to RabbitMQ queue")
 
