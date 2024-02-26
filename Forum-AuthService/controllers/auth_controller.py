@@ -29,10 +29,14 @@ class SendEmailView(MethodView):
         
         if 'user_email' not in data:
             return jsonify({'error': 'User email not provided'}), 400
+        
+        if 'token' not in data:
+            return jsonify({'error': 'User token not provided'}), 400
 
         user_email = data['user_email']
         user_id = data['user_id']
-        return jsonify(self.auth_service.send_email_to_queue(user_email, user_id))
+        token = data['token']
+        return jsonify(self.auth_service.send_email_to_queue(user_email, user_id, token))
 
 class TokenVerifyView(MethodView):
 
@@ -67,8 +71,12 @@ class CodeVerifyView(MethodView):
         if 'verification_code' not in data:
             return jsonify({'error': 'User verification code not provided'}), 400
         
+        if 'token' not in data:
+            return jsonify({'error': 'User token not provided'}), 400
+        
         user_id = data['user_id']
         verification_code = data['verification_code']
+        token = data['token']
 
-        return jsonify(self.auth_service.verify_user_code(user_id, verification_code))
+        return jsonify(self.auth_service.verify_user_code(user_id, verification_code, token))
 

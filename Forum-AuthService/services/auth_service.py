@@ -35,13 +35,15 @@ class AuthService:
         print('Auth service started listening for verification codes from RabbitMQ...')
         self.channel.start_consuming()
 
-    def send_email_to_queue(self, receiver_email, user_id):
+    def send_email_to_queue(self, receiver_email, user_id, token):
+        if self.verify_user_token(user_id, token):
+            message = f'{user_id},{receiver_email}'
+            self.channel.basic_publish(exchange='', routing_key='email_queue', body=message)
+            print("Message sent to RabbitMQ queue")
 
-        message = f'{user_id},{receiver_email}'
-        self.channel.basic_publish(exchange='', routing_key='email_queue', body=message)
-        print("Message sent to RabbitMQ queue")
-
-        return {"message": "User email sent to RabbitMQ queue."}
+            return {"message": "User email sent to RabbitMQ queue."}
+        else:
+            return {"message": "Token verification failed."}
 
     def set_user_token(self, user_id):
         expiration_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=10000)
@@ -61,8 +63,11 @@ class AuthService:
         else:
             return {"verification_result": False}
     
-    def verify_user_code(self, user_id, verification_code):
-        if self.auth_repository.get_verification_code_by_user_id(user_id) == verification_code:
-            return {"verification_result": True}
+    def verify_user_code(self, user_id, verification_code, token):
+        if self.verify_user_token(user_id, token):
+            if self.auth_repository.get_verification_code_by_user_id(user_id) == verification_code:
+                return {"verification_result": True}
+            else:
+                return {"verification_result": False}
         else:
-            return {"verification_result": False}
+            return {"message": "Token verification failed."}
