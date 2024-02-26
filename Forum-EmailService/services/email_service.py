@@ -8,7 +8,10 @@ class EmailService:
 
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
         self.channel = self.connection.channel()
+
         self.channel.queue_declare(queue='email_queue')
+        self.channel.queue_declare(queue='verification_code_queue')
+
         self.channel.basic_consume(queue='email_queue', on_message_callback=self.send_verification_code, auto_ack=True)
 
         self.start_listening()
@@ -27,6 +30,9 @@ class EmailService:
         try:
             self.mail.send(msg)
             print('Verification code sent successfully')
+            message_to_queue = f'{receiver_email},{verification_code}'
+            self.channel.basic_publish(exchange='', routing_key='verification_code_queue', body=message_to_queue)
+            print('Verification code published to verification_code_queue')
         except Exception as e:
             print(f'Error sending verification code: {str(e)}')
 
