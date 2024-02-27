@@ -17,8 +17,8 @@ routes = [
              "url": "http://127.0.0.1:6006/post_and_reply/",
              "netloc": "127.0.0.1"
              },
-            {"service_name": "message",
-             "url": "http://127.0.0.1:6008/message/",
+            {"service_name": "messages",
+             "url": "http://127.0.0.1:6008/messages/",
              "netloc": "127.0.0.1"
              },
             {"service_name": "file",
