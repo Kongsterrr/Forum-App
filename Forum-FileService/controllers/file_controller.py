@@ -17,6 +17,10 @@ class FileView(MethodView):
         file_path = data['file_path']
 
         return jsonify(self.file_service.upload_file(file_path))
+    
+    def get(self, filename):
+        return jsonify(self.file_service.get_file(filename))
+
 
     def delete(self, filename):
         return jsonify(self.file_service.delete_file(filename))
