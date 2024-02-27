@@ -9,7 +9,7 @@ app.register_blueprint(auth_blueprint)
 
 if __name__ == '__main__':
     # Start the consuming loop in a separate thread
-    auth_service = AuthService()
-    threading.Thread(target=auth_service.start_listening, daemon=True).start()
+    # auth_service = AuthService()
+    # threading.Thread(target=auth_service.start_listening, daemon=True).start()
 
     app.run(port=6000, debug=True)
