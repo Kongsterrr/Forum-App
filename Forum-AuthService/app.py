@@ -12,4 +12,4 @@ if __name__ == '__main__':
     auth_service = AuthService()
     threading.Thread(target=auth_service.start_listening, daemon=True).start()
 
-    app.run(port=8001, debug=True)
+    app.run(port=6000, debug=True)

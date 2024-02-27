@@ -10,6 +10,7 @@ class UserRegisterView(MethodView):
     
     def post(self):  
         data = request.get_json()
+        print(data)
         if 'user_id' not in data:
             return jsonify({'error': 'User id not provided'}), 400
 
