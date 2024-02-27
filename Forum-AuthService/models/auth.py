@@ -8,4 +8,5 @@ class Auth(Base):
     userId = Column(Integer, primary_key=True)
     token = Column(String(80), nullable=True)
     verification_code = Column(String(80), nullable=True)
+    status = Column(String(50), nullable=True)
     

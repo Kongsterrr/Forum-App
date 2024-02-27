@@ -43,3 +43,11 @@ class AuthRepository:
         if auth_model:
             return auth_model.verification_code
         return None
+
+    def set_user_status(self, user_id, user_status):
+        auth_model = db.query(Auth).filter_by(userId=user_id).first()
+        if auth_model:
+            auth_model.status = user_status
+            db.commit()
+            return True
+        return None

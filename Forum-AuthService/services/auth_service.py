@@ -44,18 +44,23 @@ class AuthService:
             return {"message": "User email sent to RabbitMQ queue."}
         else:
             return {"message": "Token verification failed."}
-
-    def set_user_token(self, user_id):
+    
+    def generate_user_token(self, user_id, user_status):
         expiration_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=10000)
-        token_payload = {'user_id': user_id, 'exp': expiration_time}
+        token_payload = {'user_id': user_id, 'user_status': user_status, 'exp': expiration_time}
         jwt_secret_key = config.JWT_SECURITY_KEY
         token = jwt.encode(token_payload, jwt_secret_key, algorithm="HS256")
+        return token
+
+    def set_user_token(self, user_id):
+        token = self.generate_user_token(user_id, "Normal")
 
         print("User token created: ", user_id, token)
         self.auth_repository.add_user(user_id)
         self.auth_repository.set_auth_token(user_id, token)
+        self.auth_repository.set_user_status(user_id, "Normal")
 
-        return {"user_id": user_id, "token":token}
+        return {"user_id": user_id, "token":token, "user_status": "Normal"}
     
     def verify_user_token(self, user_id, token):
         if self.auth_repository.get_token_by_user_id(user_id) == token:
@@ -66,7 +71,13 @@ class AuthService:
     def verify_user_code(self, user_id, verification_code, token):
         if self.verify_user_token(user_id, token):
             if self.auth_repository.get_verification_code_by_user_id(user_id) == verification_code:
-                return {"verification_result": True}
+
+                # Update user status and generate new token.
+                self.auth_repository.set_user_status(user_id, "Normal-write")
+                new_token = self.generate_user_token(user_id, "Normal-write")
+                self.auth_repository.set_auth_token(user_id, new_token)
+
+                return {"verification_result": True, "user_id": user_id, "user_status": "Normal-write", "token": new_token}
             else:
                 return {"verification_result": False}
         else:
