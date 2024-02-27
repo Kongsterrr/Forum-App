@@ -38,6 +38,7 @@ class PostCreateView(MethodView):
             return jsonify({'message': message}), 400
 
 
+
 class PublishPostView(MethodView):
     # @token_required
     # def put(self, post_id, current_user):

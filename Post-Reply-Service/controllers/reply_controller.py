@@ -17,3 +17,10 @@ class ReplyCreateView(MethodView):
             return jsonify({'message': message}), 201
         else:
             return jsonify({'message': message}), 400
+
+class ReplyDetailView(MethodView):
+    def __init__(self):
+        self.reply_service = ReplyService()
+
+    def get(self, reply_id):
+        return jsonify(self.reply_service.get_reply_by_id(reply_id).serialize())

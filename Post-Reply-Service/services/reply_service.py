@@ -21,3 +21,17 @@ class ReplyService:
             return success, message
         except Exception as e:
             raise
+
+    def get_reply_by_id(self, reply_id):
+        reply = self.reply_repository.get_by_id(reply_id)
+        if reply is None:
+            raise NotFoundException('Reply not found')
+        return reply
+
+    def get_all_replies_by_user(self, user_id):
+        return self.reply_repository.get_by_user_id(user_id)
+
+    def get_all_replies_by_post(self, post_id):
+        return self.reply_repository.getpost_by_post_id(post_id)
+
+

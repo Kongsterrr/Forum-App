@@ -17,10 +17,10 @@ class ReplyRepository:
             return False, str(e)
 
     def get_by_id(self, id: int) -> Optional[Reply]:
-        return db.session.query(Reply).filter(Reply.id == id)
+        return db.query(Reply).get(id)
 
     def get_by_post_id(self, post_id: int) -> Optional[Reply]:
-        return db.session.query(Reply).filter(Reply.postId == post_id).all()
+        return db.query(Reply).filter(Reply.postId == post_id).all()
 
     def get_by_user_id(self, user_id: int) -> Optional[Reply]:
-        return db.session.query(Reply).filter(Reply.userId == user_id).all()
+        return db.query(Reply).filter(Reply.userId == user_id).all()
