@@ -55,6 +55,24 @@ class UserProfileView(MethodView):
         else:
             return jsonify({"message": "User not found"}), 404
 
+class UserEmailVerificationView(MethodView):
+    def __init__(self):
+        self.user_service = UserService()
+
+    def get(self, user_id):
+        print("haha")
+        return jsonify(self.user_service.send_verification_code(user_id))
+    
+    def post(self, user_id):
+
+        data = request.get_json()
+
+        if 'verification_code' not in data:
+            return jsonify({'error': 'Verification code not provided'}), 400
+
+        verification_code = data['verification_code']
+
+        return jsonify(self.user_service.verify_user(user_id, verification_code))
 
 
 

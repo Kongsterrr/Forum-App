@@ -1,4 +1,5 @@
 import datetime
+import random
 from typing import Optional
 
 import jwt
@@ -64,3 +65,43 @@ class UserService:
             "lastName": user.lastName,
             "dateJoined": user.dateJoined.strftime('%Y-%m-%d')
         }
+    
+    def generate_verification_code(self):
+        return str(random.randint(100000, 999999))
+    
+    def send_verification_code(self, user_id):
+
+        verification_code = self.generate_verification_code()
+
+        # connect to db, update user verification code
+
+        user_email = self.user_repository.get_email_by_user(user_id)
+        self.user_repository.set_user_verification(user_id, verification_code)
+
+        auth_service_url = "http://127.0.0.1:5000/authentication/email/send"
+        payload = {
+            'user_email': user_email,
+            'verification_code': verification_code
+        }
+
+        response = requests.post(auth_service_url, json=payload)
+    
+        if response.status_code == 200:
+            return {"Message": "Email sent to the user."}
+        else:
+            return {"Message": "Failure, check email validity."}
+
+    
+
+    def verify_user(self, user_id, verification_code):
+        saved_code = self.user_repository.get_verification_code_by_id(user_id)
+        if saved_code and saved_code == verification_code:
+            # Modify user status in db
+            self.user_repository.set_user_status(user_id, "Normal-write")
+
+            # Return new token?
+            return True
+        else:
+            return False
+    
+
