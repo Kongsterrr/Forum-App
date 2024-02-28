@@ -5,3 +5,5 @@ requirements.txt
 Forum-UserService/.idea/*
 Message/*.DS_Store
 Message/**/*.DS_Store
+.idea
+
