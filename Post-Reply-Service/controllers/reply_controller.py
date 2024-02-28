@@ -19,12 +19,14 @@ class ReplyListView(MethodView):
         else:
             return jsonify({'message': message}), 400
 
-    # def get(self, post_id):
-
+    def get(self, post_id):
+        reply_list = self.reply_service.get_all_replies_by_post(post_id)
+        return jsonify([reply.serialize() for reply in reply_list])
 
 class ReplyDetailView(MethodView):
     def __init__(self):
         self.reply_service = ReplyService()
 
     def get(self, post_id, reply_id):
-        return jsonify(self.reply_service.get_reply_by_id(reply_id).serialize())
+        reply = jsonify(self.reply_service.get_reply_by_id(post_id,reply_id).serialize())
+        return jsonify(self.reply_service.get_reply_by_id(post_id,reply_id).serialize())

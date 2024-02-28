@@ -21,6 +21,3 @@ class ReplyRepository:
 
     def get_by_post_id(self, post_id: int) -> Optional[Reply]:
         return db.query(Reply).filter(Reply.postId == post_id).all()
-
-    def get_by_user_id(self, user_id: int) -> Optional[Reply]:
-        return db.query(Reply).filter(Reply.userId == user_id).all()
