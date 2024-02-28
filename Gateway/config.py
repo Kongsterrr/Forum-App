@@ -29,4 +29,9 @@ routes = [
              "url": "http://127.0.0.1:6012/email/",
              "netloc": "127.0.0.1"
              },
+            {"service_name": "post-details",
+             "url": "http://127.0.0.1:6080/post-details/",
+             "netloc": "127.0.0.1"
+             },
+
           ]
