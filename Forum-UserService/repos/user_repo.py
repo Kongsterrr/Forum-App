@@ -1,5 +1,7 @@
 from typing import Optional
 
+from pymysql import IntegrityError
+
 from aop.exceptions import NotFoundException
 from models.user import User
 from models.database import db
@@ -8,25 +10,33 @@ from models.database import db
 class UserRepository:
     def get_user_by_Id(self, userId) -> Optional[User]:
         return db.query(User).get(userId)
-        # if user_id == 1:
-        #     return User(1, 'kason', 'kason@gmail.com')
-        # else:
-        #     return None
 
     def add_user(self, new_user):
         db.add(new_user)
         try:
             db.commit()
-            return True, "User registered successfully."
-        except Exception as e:
+            user_id = self.get_user_by_email(new_user.email).userId
+            return True, "User registered successfully.", user_id
+        except IntegrityError as e:
             db.rollback()
-            return False, str(e)
+            return False, str(e), None
 
     def get_user_by_email(self, email):
         return db.query(User).filter_by(email=email).first()
     
     def get_email_by_user(self, user_id):
         return self.get_user_by_Id(user_id).email
+    
+    def authenticate_user(self, email, password):
+        this_user = self.get_user_by_email(email)
+        print("this_user email: ", this_user.email)
+        print("this_user password: ", this_user.password)
+        print("input password: ", password)
+        if password == this_user.password:
+            return this_user.userId, this_user.type
+        else:
+            return None, None
+
     
     def set_user_verification(self, user_id, verification_code):
         user_model = db.query(User).get(user_id)
