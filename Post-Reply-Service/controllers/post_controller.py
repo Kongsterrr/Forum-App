@@ -40,13 +40,12 @@ class PostCreateView(MethodView):
 
 
 class PublishPostView(MethodView):
-    # @token_required
-    # def put(self, post_id, current_user):
-    # success, message = PostService().publish_post(post_id, current_user.user_id)
-    # return jsonify({'message': message}), 200 if success else 400
-    def put(self, post_id):
-        success, message = PostService().publish_post(post_id)
+    def __init__(self):
+        self.post_service = PostService()
 
+    @token_required
+    def put(self, post_id, user_id, user_status):
+        success, message = self.post_service.publish_post(post_id, user_id)
         return jsonify({'message': message}), 200 if success else 400
 
 
@@ -104,3 +103,13 @@ class UnBannedPostView(MethodView):
         success, message = PostService().unbanned_post(post_id)
 
         return jsonify({'message': message}), 200 if success else 400
+
+
+class PublishedPostView(MethodView):
+    def __init__(self):
+        self.post_service = PostService()
+
+    def get(self):
+        posts = self.post_service.fetch_published_posts()
+        posts_data = [post.serialize() for post in posts]
+        return jsonify(posts_data), 200

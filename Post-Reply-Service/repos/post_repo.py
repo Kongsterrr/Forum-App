@@ -86,3 +86,7 @@ class PostRepository:
             db.commit()
             return True, "Successfully UnBanned Post to Published"
         return False, "Post not found or insufficient permissions."
+
+
+    def get_published_posts(self):
+        return db.query(Post).filter_by(status='Published').order_by(Post.dateCreated.desc()).all()
