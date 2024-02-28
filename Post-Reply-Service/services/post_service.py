@@ -36,7 +36,10 @@ class PostService:
         except Exception as e:
             raise NotFoundException('Post Updated Failed')
 
-    def publish_post(self, post_id):
+    def publish_post(self, post_id, user_id):
+        post = self.post_repository.get_post_by_Id(post_id)
+        if post.userId != user_id:
+            return False, "User is not authorized to publish this post"
         try:
             success, message = self.post_repository.mark_post_as_published(post_id)
             return success, message
@@ -87,5 +90,10 @@ class PostService:
             return success, message
         except Exception as e:
             raise NotFoundExcept
+
+    def fetch_published_posts(self):
+        return self.post_repository.get_published_posts()
+
+
 
 
