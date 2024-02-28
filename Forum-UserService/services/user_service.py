@@ -27,10 +27,10 @@ class UserService:
     def create_user(self, user_data):
         try:
             new_user = User(**user_data)
-            success, message = self.user_repository.add_user(new_user)
-            return success, message
+            success, message, user_id = self.user_repository.add_user(new_user)
+            return success, message, user_id
         except IntegrityError as e:
-            raise DuplicateEmailException("This email is already registered.")
+            return False, str("This email is already registered."), None
         except Exception as e:
             raise
 
@@ -91,7 +91,9 @@ class UserService:
         else:
             return {"Message": "Failure, check email validity."}
 
-    
+    def authenticate_user(self, user_email, password):
+        return self.user_repository.authenticate_user(user_email, password)
+
 
     def verify_user(self, user_id, verification_code):
         saved_code = self.user_repository.get_verification_code_by_id(user_id)
