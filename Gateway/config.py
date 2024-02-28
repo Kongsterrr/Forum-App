@@ -5,8 +5,8 @@ routes = [
              "url": "http://127.0.0.1:6000/authentication/",
              "netloc": "127.0.0.1"
              },
-            {"service_name": "user",
-             "url": "http://127.0.0.1:6002/user/",
+            {"service_name": "users",
+             "url": "http://127.0.0.1:6002/users/",
              "netloc": "127.0.0.1"
              },
             {"service_name": "history",
