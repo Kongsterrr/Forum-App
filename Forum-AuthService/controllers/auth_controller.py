@@ -9,11 +9,11 @@ class UserRegisterView(MethodView):
 
     def post(self):
         user_data = request.get_json()
-        success, message = self.auth_service.create_user(user_data)
+        success, message, user_id = self.auth_service.create_user(user_data)
         if success:
-            return jsonify({'message': message}), 201
+            return jsonify({'message': message, 'user_id': user_id}), 201
         else:
-            return jsonify({'message': message}), 400
+            return jsonify({'message': message, 'user_id': user_id}), 400
 
 class UserLoginView(MethodView):
     def __init__(self):
@@ -22,13 +22,13 @@ class UserLoginView(MethodView):
     def post(self):
         data = request.get_json()
 
-        if 'user_email' not in data:
+        if 'email' not in data:
             return jsonify({'error': 'User email not provided'}), 400
     
         if 'password' not in data:
             return jsonify({'error': 'User password not provided'}), 400
         
-        user_email = data['user_email']
+        user_email = data['email']
         password = data['password']
         return jsonify(self.auth_service.login_user(user_email, password))
 
