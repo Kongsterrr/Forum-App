@@ -30,9 +30,13 @@ class PostService:
         except Exception as e:
             raise NotFoundException('Post Created Failed')
 
-    def update_post(self, post_id, post_data):
+    def update_post(self, post_id, post_data, user_id):
+        post = self.post_repository.get_post_by_Id(post_id)
+        if post.userId != user_id:
+            return False, "User is not authorized to update this post"
         try:
-            success, message = self.post_repository.update_post(post_id, post_data)
+            post_data['userId'] = user_id
+            success, message = self.post_repository.update_post_repo(post_id, post_data)
             return success, message
         except Exception as e:
             raise NotFoundException('Post Updated Failed')
@@ -56,6 +60,12 @@ class PostService:
             return success, message
         except Exception as e:
             raise NotFoundException('Post Hided Failed')
+
+    def get_delete_post(self, user_status):
+        if user_status != "Admin":
+            return False, "Insufficient permissions to view all the deleted post."
+        deleted_posts = self.post_repository.get_all_deleted_post()
+        return True, deleted_posts
 
     def delete_post(self, post_id, user_id):
         post = self.post_repository.get_post_by_Id(post_id)
@@ -88,6 +98,13 @@ class PostService:
             raise NotFoundExcept
 
     # For Admin
+    def get_ban_post(self, user_status):
+        if user_status != "Admin":
+            return False, "Insufficient permissions view all the banned post."
+        ban_posts = self.post_repository.get_all_banned_post()
+        return True, ban_posts
+
+
     def ban_post(self, post_id, user_status):
         if user_status != "Admin":
             return False, "Insufficient permissions to ban the post."

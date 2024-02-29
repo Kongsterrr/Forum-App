@@ -65,3 +65,38 @@ class PostDetailService:
         }
 
         return aggregated_data
+
+
+    def get_user_home(self):
+        try:
+            post_response = requests.get(f'{self.post_and_reply_service_url}/published-post')
+            if post_response.status_code == 200:
+                posts_data = post_response.json()
+            else:
+                return {'error': f'Failed to fetch posts, status code: {post_response.status_code}'}
+        except ValueError:
+            return {'error': 'Invalid JSON response from posts service'}
+
+        aggregated_data_list = []
+
+        for post in posts_data:
+            user_id = post['userId']
+            try:
+                user_response = requests.get(f'{self.user_service_url}/{user_id}')
+                if user_response.status_code == 200:
+                    user_data = user_response.json()
+                    aggregated_data = {
+                        'firstName': user_data.get('firstName'),
+                        'lastName': user_data.get('lastName'),
+                        'date': post['dateModified'] if post.get('dateModified') else post['dateCreated'],
+                        'title': post['title'],
+                    }
+                    aggregated_data_list.append(aggregated_data)
+                else:
+                    aggregated_data_list.append({
+                        'error': f'User details for userId {user_id} could not be fetched, status code: {user_response.status_code}'
+                    })
+            except ValueError:
+                aggregated_data_list.append({'error': f'Invalid JSON response for user with ID {user_id}'})
+
+        return aggregated_data_list
