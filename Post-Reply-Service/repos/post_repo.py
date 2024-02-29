@@ -21,7 +21,7 @@ class PostRepository:
             db.rollback()
             return False, str(e)
 
-    def update_post(self, post_id, post_data):
+    def update_post_repo(self, post_id, post_data):
         post = db.query(Post).filter_by(postId=post_id).first()
         if post:
             for key, value in post_data.items():
@@ -46,6 +46,10 @@ class PostRepository:
             db.commit()
             return True, "Post marked as Hidden"
         return False, "Post not found or insufficient permissions."
+
+    def get_all_deleted_post(self):
+        deleted_posts = db.query(Post).filter_by(status='Deleted').all()
+        return deleted_posts
 
     def mark_post_as_deleted(self, post_id):
         post = db.query(Post).filter_by(postId=post_id).first()
@@ -73,6 +77,11 @@ class PostRepository:
         return False, "Post not found or insufficient permissions."
 
     # For Admin
+    def get_all_banned_post(self):
+        ban_posts = db.query(Post).filter_by(status='Banned').all()
+        return ban_posts
+
+
     def mark_post_to_banned(self, post_id):
         post = db.query(Post).filter_by(postId=post_id).first()
         if post and post.status == "Published":
