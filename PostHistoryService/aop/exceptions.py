@@ -17,3 +17,11 @@ class UnauthorizedException(HTTPException):
     def __init__(self, message):
         self.description = message
         super().__init__(self.description)
+
+class InvalidTokenError(Exception):
+    code = 401
+    description = 'Invalid Token Error'
+
+    def __init__(self, message):
+        self.description = message
+        super().__init__(self.description)

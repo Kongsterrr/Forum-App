@@ -4,15 +4,14 @@ from flask import jsonify, request
 from flask.views import MethodView
 
 from aop.decorators import token_required
-from models.history import History
-from services.history_service import HistoryService
+from services.post_history_service import PostHistoryService
 
 
-class HistoryController(MethodView):
+class PostHistoryController(MethodView):
     def __init__(self):
-        self.history_service = HistoryService()
+        self.post_history_service = PostHistoryService()
 
-    # @token_required
+    @token_required
     def get(self, user_id):
 
         history_result = self.history_service.get_history_by_user(user_id)
