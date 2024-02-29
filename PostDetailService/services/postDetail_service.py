@@ -24,7 +24,8 @@ class PostDetailService:
         if reply_response.status_code != 200:
             replies = []
 
-        reply_data = reply_response.json()
+        reply_data_container = reply_response.json()
+        reply_data = reply_data_container.get('replies', [])
 
         replies_list = []
         for reply in reply_data:
@@ -49,8 +50,6 @@ class PostDetailService:
             except ValueError:
                 replies_list.append({'error': f'Invalid JSON response for user with ID {user_id}'})
 
-
-        # Assuming we proceed even if replies can't be fetched
         aggregated_data = {
             'postId': post_data['postId'],
             'title': post_data['title'],
@@ -62,7 +61,6 @@ class PostDetailService:
             },
             'dateCreated': post_data['dateCreated'],
             'dateModified': post_data.get('dateModified'),
-            # 'replies': reply_data if 'reply_data' in locals() else []
             'replies': replies_list
         }
 
