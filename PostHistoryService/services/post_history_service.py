@@ -2,7 +2,7 @@ import datetime
 from typing import Optional
 import jwt
 from aop.exceptions import NotFoundException
-from flask import request
+from flask import request, jsonify
 import requests
 
 class PostHistoryService:
@@ -10,26 +10,13 @@ class PostHistoryService:
         self.history_url = 'http://127.0.0.1:5000/history'
         self.post_reply_url = 'http://127.0.0.1:5000/post_and_reply'
 
-    # def get_post_history(self, post_id):
-    #     history_response = requests.get(self.history_url + '/' +)
+    def get_post_history(self, user_id):
+        history_response = requests.get(self.history_url + '/' + str(user_id))
+        histories = history_response.json()["histories"]
 
-# class HistoryService:
-#     def __init__(self):
-#         self.history_repository = HistoryRepository()  # it's better to use dependency injection here
-#
-#     def get_history_by_user(self, uid: str) -> Optional[History]:
-#         return self.history_repository.get_history_by_user(uid)
-#
-#     def get_history_by_id(self, historyID: int)-> Optional[History]:
-#         h: History = self.history_repository.get_history_by_Id(historyID)
-#         if h is None:
-#             raise NotFoundException('History not found')
-#         return h
-#
-#     def create_history(self, history_data):
-#         try:
-#             new_history = History(**history_data)
-#             success, message = self.history_repository.add_history(new_history)
-#             return success, message
-#         except Exception as e:
-#             raise
+        post_history = []
+        for history in histories:
+            post_response = requests.get(self.post_reply_url + '/' + str(history["postId"]))
+            post = post_response.json()
+            post_history.append(post)
+        return post_history
