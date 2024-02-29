@@ -10,8 +10,8 @@ class PostHistoryService:
         self.history_url = 'http://127.0.0.1:5000/history'
         self.post_reply_url = 'http://127.0.0.1:5000/post_and_reply'
 
-    def get_post_history(self, post_id):
-        history_response = requests.get(self.history_url + '/' +)
+    # def get_post_history(self, post_id):
+    #     history_response = requests.get(self.history_url + '/' +)
 
 # class HistoryService:
 #     def __init__(self):
