@@ -2,10 +2,13 @@ from typing import Optional
 
 from aop.exceptions import NotFoundException
 from models.post import Post
+from models.reply import Reply
 from models.database import db
+from sqlalchemy import func
 
 
 class PostRepository:
+
     def get_post_by_Id(self, postId):
         return db.query(Post).get(postId)
 
@@ -90,3 +93,19 @@ class PostRepository:
 
     def get_published_posts(self):
         return db.query(Post).filter_by(status='Published').order_by(Post.dateCreated.desc()).all()
+
+
+    def get_top_posts_by_user(self, user_id):
+        top_posts_query = (db.query(Post, func.count(Reply.replyId).label('reply_count'))
+                           .join(Reply, Post.postId == Reply.postId)
+                           .filter(Post.userId == user_id, Post.isArchived == False)
+                           .group_by(Post.postId)
+                           .order_by(func.count(Reply.replyId).desc())
+                           .limit(3))
+        top_posts = top_posts_query.all()
+        return top_posts
+
+
+    def get_unpublished_posts_by_user(self, user_id):
+        drafts = db.query(Post).filter_by(userId=user_id, status='Unpublished').all()
+        return drafts
