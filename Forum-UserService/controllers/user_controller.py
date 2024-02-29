@@ -25,11 +25,11 @@ class UserRegisterView(MethodView):
 
     def post(self):
         user_data = request.get_json()
-        success, message = self.user_service.create_user(user_data)
+        success, message, user_id = self.user_service.create_user(user_data)
         if success:
-            return jsonify({'message': message}), 201
+            return jsonify({'message': message, 'user_id': user_id}), 201
         else:
-            return jsonify({'message': message}), 400
+            return jsonify({'message': message, 'user_id': user_id}), 400
 
 
 class UserLoginView(MethodView):
@@ -38,17 +38,20 @@ class UserLoginView(MethodView):
 
     def post(self):
         data = request.get_json()
-        token, user_type = self.user_service.get_user_token_and_type(data['email'], data['password'])
+        user_id, user_status = self.user_service.authenticate_user(data['email'], data['password'])
 
-        return jsonify({'token': token, 'type': user_type}), 200
+        if user_id:
+            return jsonify({'Authentication status': 'Success', 'user_id': user_id, 'user_status': user_status}), 200
+
+        return jsonify({'Authentication status': 'Failure'}), 401
 
 
 class UserProfileView(MethodView):
     def __init__(self):
         self.user_service = UserService()
 
-    @token_required
-    def get(self, current_user, user_id):
+    # @token_required
+    def get(self, user_id):
         user_profile = self.user_service.get_user_profile(user_id)
         if user_profile:
             return jsonify(user_profile), 200
