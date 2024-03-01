@@ -118,3 +118,7 @@ class PostRepository:
     def get_unpublished_posts_by_user(self, user_id):
         drafts = db.query(Post).filter_by(userId=user_id, status='Unpublished').all()
         return drafts
+
+    def get_hidden_posts_by_user(self, user_id):
+        hidden_posts = db.query(Post).filter_by(userId=user_id, status='Hidden').all()
+        return hidden_posts

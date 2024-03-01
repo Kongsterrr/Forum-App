@@ -134,6 +134,10 @@ class PostService:
     def get_unpublished_posts(self, user_id):
         return self.post_repository.get_unpublished_posts_by_user(user_id)
 
+    def get_hidden_post(self, user_id):
+        return self.post_repository.get_hidden_posts_by_user(user_id)
+
+
 
 
 

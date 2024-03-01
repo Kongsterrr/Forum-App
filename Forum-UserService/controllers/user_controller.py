@@ -6,19 +6,6 @@ from models.user import User
 from services.user_service import UserService
 
 
-class UserView(MethodView):
-
-    def __init__(self):
-        self.user_service = UserService()
-
-    def get(self, user_id):
-        return jsonify(self.user_service.get_user(user_id).serialize())
-
-    @token_required
-    def put(self, current_user, user_id):  # current_user is injected by the decorator, must be the first argument
-        return jsonify(request.json), 200
-
-
 class UserRegisterView(MethodView):
     def __init__(self):
         self.user_service = UserService()
@@ -78,4 +65,14 @@ class UserEmailVerificationView(MethodView):
         return jsonify(self.user_service.verify_user(user_id, verification_code))
 
 
+class UserStatusUpgradeView(MethodView):
+    def __init__(self):
+        self.user_service = UserService()
 
+    @token_required
+    def put(self, userId, user_id, user_status):
+        success, message = self.user_service.upgrade_to_admin(userId, user_status)
+        if success:
+            return jsonify({'message': message}), 200
+        else:
+            return jsonify({'error': message}), 404
