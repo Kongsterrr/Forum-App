@@ -16,7 +16,7 @@ export default function HomePage() {
     const fetchPosts = async () => {
         const response = await fetch("http://127.0.0.1:5000/post-details/");
         const data = await response.json();
-
+        console.log(data);
         const allPostsData = [];
         for (let i = 0; i < data.length; i++) {
             if ("title" in data[i] && "firstName" in data[i] && "lastName" in data[i] && "date" in data[i]) {
