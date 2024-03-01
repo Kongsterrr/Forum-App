@@ -24,6 +24,18 @@ class FileService:
             return {'message': 'File uploaded successfully', 'url': url}
         except Exception as e:
             return {'error': str(e)}
+    
+    def upload_files(self, user_id, file_paths):
+        try:
+            urls = []
+            for file_path in file_paths:
+                filename = str(user_id) + "-post-" + secure_filename(file_path.split("/")[-1]) 
+                self.s3_client.upload_file(file_path, self.bucket_name, filename)
+                url = self.get_file(filename)
+                urls.append(url)
+            return {'message': 'Files uploaded successfully', 'urls': urls}
+        except Exception as e:
+            return {'error': str(e)}
 
     def delete_file(self, filename):
         try:
