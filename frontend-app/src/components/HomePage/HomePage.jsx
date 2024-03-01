@@ -32,14 +32,10 @@ export default function HomePage() {
         fetchPosts();
     }, []);
 
-    useEffect(() => {
-        console.log("All Posts: " + allPosts);
-    }, [allPosts]);
-
     return (
         <div>
             <h1>Home Page</h1>
-            <p>Welcome to the home page of the Vite React App.</p>
+            <p>Welcome to the home page of the Forum App.</p>
             
             <div>
                 {allPosts.map((post, index) => (
