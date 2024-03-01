@@ -123,4 +123,10 @@ class UserService:
         else:
             return {"Message": "Picture update failure."}
     
+    def update_user_email(self, user_id, user_email):
+        self.user_repository.update_user_email(user_id, user_email)
+        self.send_verification_code(user_id)
+        return {"Message": "Email sent to the user for update."}
+
+    
 

@@ -80,10 +80,12 @@ class UserProfileUpdateView(MethodView):
     def __init__(self):
         self.user_service = UserService()
 
-    
     def post(self, user_id):
 
         data = request.get_json()
+
+        if 'update_type' not in data:
+                return jsonify({'error': 'Update type not provided'}), 400
 
         update_type = data.get('update_type')
 
@@ -96,9 +98,11 @@ class UserProfileUpdateView(MethodView):
         if update_type == 'email':
             if 'email' not in data:
                 return jsonify({'error': 'User email not provided'}), 400
+            email = data['email']
+            return jsonify(self.user_service.update_user_email(user_id, email))
+        
+        return jsonify({'error': 'Update type invalid.'}), 400
 
-
-        return
 
 
 
