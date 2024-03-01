@@ -11,12 +11,16 @@ class FileView(MethodView):
 
     def post(self):  
         data = request.get_json()
+
+        if 'user_id' not in data:
+            return jsonify({'error': 'User id not provided'}), 400
+        
         if 'file_path' not in data:
             return jsonify({'error': 'File path not provided'}), 400
 
         file_path = data['file_path']
-
-        return jsonify(self.file_service.upload_file(file_path))
+        user_id = data['user_id']
+        return jsonify(self.file_service.upload_file(user_id, file_path))
     
     def get(self, filename):
         return jsonify(self.file_service.get_file(filename))

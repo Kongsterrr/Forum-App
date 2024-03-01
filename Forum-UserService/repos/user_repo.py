@@ -61,5 +61,15 @@ class UserRepository:
         except Exception as e:
             db.rollback()
             return False, str(e)
+    
+    def update_user_profile_pic(self, userId, url):
+        user_model = db.query(User).get(userId)
+        user_model.profileImageURL = url
+        try:
+            db.commit()
+            return True, "User profile image set successfully."
+        except Exception as e:
+            db.rollback()
+            return False, str(e)
 
 

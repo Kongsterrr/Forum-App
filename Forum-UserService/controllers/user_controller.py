@@ -63,7 +63,6 @@ class UserEmailVerificationView(MethodView):
         self.user_service = UserService()
 
     def get(self, user_id):
-        print("haha")
         return jsonify(self.user_service.send_verification_code(user_id))
     
     def post(self, user_id):
@@ -76,6 +75,30 @@ class UserEmailVerificationView(MethodView):
         verification_code = data['verification_code']
 
         return jsonify(self.user_service.verify_user(user_id, verification_code))
+
+class UserProfileUpdateView(MethodView):
+    def __init__(self):
+        self.user_service = UserService()
+
+    
+    def post(self, user_id):
+
+        data = request.get_json()
+
+        update_type = data.get('update_type')
+
+        if update_type == 'picture':
+            if 'url' not in data:
+                return jsonify({'error': 'Profile picture url not provided'}), 400
+            url = data['url']
+            return jsonify(self.user_service.update_profile_pic(user_id, url))
+
+        if update_type == 'email':
+            if 'email' not in data:
+                return jsonify({'error': 'User email not provided'}), 400
+
+
+        return
 
 
 
