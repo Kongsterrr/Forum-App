@@ -4,7 +4,7 @@ import config
 import jwt
 from flask import request
 
-from aop.exceptions import UnauthorizedException
+from aop.exceptions import *
 
 def token_required(f):
     @wraps(f)

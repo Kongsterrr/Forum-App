@@ -15,9 +15,12 @@ class HistoryController(MethodView):
     def get(self, uid):
         history_result = self.history_service.get_history_by_user(uid)
         if not history_result:
-            return jsonify(history_result)
+            return jsonify({"histories": []})
         return jsonify({"histories": [res.serialize() for res in history_result]})
 
+class HistoryCreateController(MethodView):
+    def __init__(self):
+        self.history_service = HistoryService()
     @token_required
     def post(self, user_id, user_status):
         try:
