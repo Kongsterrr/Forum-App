@@ -94,7 +94,6 @@ class UserService:
     def authenticate_user(self, user_email, password):
         return self.user_repository.authenticate_user(user_email, password)
 
-
     def verify_user(self, user_id, verification_code):
         saved_code = self.user_repository.get_verification_code_by_id(user_id)
         if saved_code and saved_code == verification_code:
@@ -105,6 +104,11 @@ class UserService:
             return True
         else:
             return False
+
+    def upgrade_to_admin(self, userId, user_status):
+        if user_status != "SuperAdmin":
+            return False, "Only SuperAdmin can upgrade Normal User to Admin User"
+        return self.user_repository.upgrade_user_to_admin(userId)
     
     def update_profile_pic(self, user_id, pic_path):
         auth_service_url = "http://127.0.0.1:5000/file/upload"

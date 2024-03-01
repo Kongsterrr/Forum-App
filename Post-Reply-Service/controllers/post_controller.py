@@ -37,7 +37,6 @@ class PostCreateView(MethodView):
             return jsonify({'message': message}), 400
 
 
-
 class PublishPostView(MethodView):
     def __init__(self):
         self.post_service = PostService()
@@ -49,9 +48,12 @@ class PublishPostView(MethodView):
 
 
 class HidePostView(MethodView):
+    def __init__(self):
+        self.post_service = PostService()
+
     @token_required
     def put(self, post_id, user_id, user_status):
-        success, message = PostService().hide_post(post_id, user_id)
+        success, message = self.post_service.hide_post(post_id, user_id)
         return jsonify({'message': message}), 200 if success else 400
 
 
@@ -66,17 +68,23 @@ class DeletePostView(MethodView):
 
 
 class ArchivePostView(MethodView):
+    def __init__(self):
+        self.post_service = PostService()
+
     @token_required
     def put(self, post_id, user_id, user_status):
-        success, message = PostService().archive_post(post_id, user_id)
+        success, message = self.post_service.archive_post(post_id, user_id)
         return jsonify({'message': message}), 200 if success else 400
 
 
 # For Admin
 class RecoverDeleteToPublishedPostView(MethodView):
+    def __init__(self):
+        self.post_service = PostService()
+
     @token_required
     def put(self, post_id, user_id, user_status):
-        success, message = PostService().recover_post(post_id, user_status)
+        success, message = self.post_service.recover_post(post_id, user_status)
         return jsonify({'message': message}), 200 if success else 400
 
 
@@ -102,7 +110,7 @@ class UnBannedPostView(MethodView):
         return jsonify({'message': message}), 200 if success else 400
 
 
-class PublishedPostView(MethodView):
+class AllPublishedPostView(MethodView):
     def __init__(self):
         self.post_service = PostService()
 
@@ -116,7 +124,8 @@ class Top3PostsView(MethodView):
     def __init__(self):
         self.post_service = PostService()
 
-    def get(self, user_id):
+    @token_required
+    def get(self, user_id, user_status):
         top_posts = self.post_service.get_top_user_posts(user_id)
         result = [{
             'postId': post.Post.postId,
@@ -127,16 +136,17 @@ class Top3PostsView(MethodView):
         return jsonify(result)
 
 
-class UnpublishedPostsView(MethodView):
+class AllUnpublishedPostsView(MethodView):
     def __init__(self):
         self.post_service = PostService()
 
-    def get(self, user_id):
+    @token_required
+    def get(self, user_id, user_status):
         drafts = self.post_service.get_unpublished_posts(user_id)
         return jsonify([draft.serialize() for draft in drafts]), 200
 
 
-class GetBannedPostView(MethodView):
+class AllBannedPostView(MethodView):
     def __init__(self):
         self.post_service = PostService()
 
@@ -148,7 +158,7 @@ class GetBannedPostView(MethodView):
         return jsonify([ban_post.serialize() for ban_post in result]), 200
 
 
-class GetDeletePostView(MethodView):
+class AdminGetDeletePostView(MethodView):
     def __init__(self):
         self.post_service = PostService()
 
@@ -158,3 +168,13 @@ class GetDeletePostView(MethodView):
         if not success:
             return jsonify({'error': result}), 403
         return jsonify([delete_post.serialize() for delete_post in result]), 200
+
+
+class AllHiddenPostView(MethodView):
+    def __init__(self):
+        self.post_service = PostService()
+
+    @token_required
+    def get(self, user_id, user_status):
+        result = self.post_service.get_hidden_post(user_id)
+        return jsonify([hidden_post.serialize() for hidden_post in result]), 200

@@ -82,4 +82,12 @@ class UserRepository:
             db.rollback()
             return False, str(e)
 
+    def upgrade_user_to_admin(self, userId):
+        user = db.query(User).get(userId)
+        print(user.type)
+        if user and user.type == "Normal":
+            user.type = 'Admin'
+            db.commit()
+            return True, f"User {user.email} upgraded to admin."
+        return False, "User not found."
 
