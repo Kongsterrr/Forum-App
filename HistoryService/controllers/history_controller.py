@@ -15,7 +15,7 @@ class HistoryController(MethodView):
     def get(self, uid):
         history_result = self.history_service.get_history_by_user(uid)
         if not history_result:
-            return jsonify(history_result)
+            return jsonify({"histories": []})
         return jsonify({"histories": [res.serialize() for res in history_result]})
 
     @token_required
