@@ -8,7 +8,7 @@ export default function PostCard({ post }) {
     }
 
     return (
-        <Link to={`/post/${post.id}`} className="card-container">
+        <Link to={`/post/${post.postId}`} className="card-container">
             <h2>{post.title}</h2>
             <p>{post.firstName} {post.lastName}</p>
             <p>{post.date}</p>
