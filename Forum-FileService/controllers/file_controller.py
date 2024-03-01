@@ -25,7 +25,24 @@ class FileView(MethodView):
     def get(self, filename):
         return jsonify(self.file_service.get_file(filename))
 
-
     def delete(self, filename):
         return jsonify(self.file_service.delete_file(filename))
 
+class MultiFileView(MethodView):
+
+    def __init__(self):
+        self.file_service = FileService()  
+
+    def post(self):  
+        data = request.get_json()
+
+        if 'user_id' not in data:
+            return jsonify({'error': 'User id not provided'}), 400
+        
+        if 'file_paths' not in data:
+            return jsonify({'error': 'File paths not provided'}), 400
+
+        file_paths = data['file_paths']
+        user_id = data['user_id']
+        return jsonify(self.file_service.upload_files(user_id, file_paths))
+    
