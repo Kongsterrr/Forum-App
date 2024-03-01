@@ -86,6 +86,7 @@ class PostDetailService:
                 if user_response.status_code == 200:
                     user_data = user_response.json()
                     aggregated_data = {
+                        'postId': post['postId'],
                         'firstName': user_data.get('firstName'),
                         'lastName': user_data.get('lastName'),
                         'date': post['dateModified'] if post.get('dateModified') else post['dateCreated'],
