@@ -16,15 +16,12 @@ class FileService:
             region_name=config["AWS_BUCKET_REGION"]
         )
 
-    def upload_file(self, file_path):
+    def upload_file(self, user_id, file_path):
         try:
-            filename = secure_filename(file_path.split("/")[-1]) 
-            extra_args = {
-                'ContentType': 'image/png' 
-            }
-            self.s3_client.upload_file(file_path, self.bucket_name, filename, ExtraArgs=extra_args)
+            filename = str(user_id) + "-" + secure_filename(file_path.split("/")[-1]) 
             self.s3_client.upload_file(file_path, self.bucket_name, filename)
-            return {'message': 'File uploaded successfully'}
+            url = self.get_file(filename)
+            return {'message': 'File uploaded successfully', 'url': url}
         except Exception as e:
             return {'error': str(e)}
 
@@ -39,7 +36,6 @@ class FileService:
         try:
             url = self.s3_client.generate_presigned_url('get_object', 
                                                         Params={'Bucket': self.bucket_name, 'Key': file_name},
-                                                        ExpiresIn=3600,
                                                         HttpMethod='GET',
                                                         )
             return url

@@ -106,4 +106,27 @@ class UserService:
         else:
             return False
     
+    def update_profile_pic(self, user_id, pic_path):
+        auth_service_url = "http://127.0.0.1:5000/file/upload"
+        payload = {
+            'user_id': user_id,
+            'file_path': pic_path
+        }
+        response = requests.post(auth_service_url, json=payload)
+    
+        if response.status_code == 200:
+            # save url to db
+            data = response.json()
+            url = data.get('url')
+            self.user_repository.update_user_profile_pic(user_id, url)
+            return {"Message": "Successfully set user profile picture."}
+        else:
+            return {"Message": "Picture update failure."}
+    
+    def update_user_email(self, user_id, user_email):
+        self.user_repository.update_user_email(user_id, user_email)
+        self.send_verification_code(user_id)
+        return {"Message": "Email sent to the user for update."}
+
+    
 
