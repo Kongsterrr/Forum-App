@@ -7,8 +7,8 @@ from routes.gateway_blueprint import gateway_blueprint
 app = Flask(__name__)
 app.register_blueprint(gateway_blueprint)
 
-CORS(app)
-# CORS(app, resources={r"/*": {"origins": "*"}})
+# CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 
 if __name__ == '__main__':

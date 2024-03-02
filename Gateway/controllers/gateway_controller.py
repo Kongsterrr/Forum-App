@@ -27,13 +27,13 @@ class GatewayView(MethodView):
         raw_response = requests.put(url, stream=True, data=request.get_data(), headers=headers)
         return self._get_response(raw_response), raw_response.status_code
 
-    def options(self, path):
-        # Create a response with CORS headers for OPTIONS requests
-        response = Response()
-        response.headers['Access-Control-Allow-Origin'] = '*'  # Allow requests from any origin
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'  # Specify allowed methods
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'  # Specify allowed headers
-        return response
+    # def options(self, path):
+    #     # Create a response with CORS headers for OPTIONS requests
+    #     response = Response()
+    #     response.headers['Access-Control-Allow-Origin'] = '*'  # Allow requests from any origin
+    #     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'  # Specify allowed methods
+    #     response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'  # Specify allowed headers
+    #     return response
 
     # Used to get the response from the raw response
     def _get_response(self, raw_response):
