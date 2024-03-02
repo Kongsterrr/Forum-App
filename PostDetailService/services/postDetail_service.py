@@ -1,4 +1,6 @@
 import requests
+from flask import request
+
 
 class PostDetailService:
     def __init__(self):
@@ -101,3 +103,135 @@ class PostDetailService:
                 aggregated_data_list.append({'error': f'Invalid JSON response for user with ID {user_id}'})
 
         return aggregated_data_list
+
+    def get_banned_post(self):
+        try:
+            post_response = requests.get(f'{self.post_and_reply_service_url}/all-banned-posts')
+            if post_response.status_code == 200:
+                posts_data = post_response.json()
+            else:
+                return {'error': f'Failed to fetch posts, status code: {post_response.status_code}'}
+        except ValueError:
+            return {'error': 'Invalid JSON response from posts service'}
+
+        aggregated_data_list = []
+
+        for post in posts_data:
+            user_id = post['userId']
+            try:
+                user_response = requests.get(f'{self.user_service_url}/{user_id}')
+                if user_response.status_code == 200:
+                    user_data = user_response.json()
+                    aggregated_data = {
+                        'postId': post['postId'],
+                        'firstName': user_data.get('firstName'),
+                        'lastName': user_data.get('lastName'),
+                        'date': post['dateModified'] if post.get('dateModified') else post['dateCreated'],
+                        'title': post['title'],
+                    }
+                    aggregated_data_list.append(aggregated_data)
+                else:
+                    aggregated_data_list.append({
+                        'error': f'User details for userId {user_id} could not be fetched, status code: {user_response.status_code}'
+                    })
+            except ValueError:
+                aggregated_data_list.append({'error': f'Invalid JSON response for user with ID {user_id}'})
+
+        return aggregated_data_list
+
+
+    def get_deleted_post(self):
+        try:
+            post_response = requests.get(f'{self.post_and_reply_service_url}/all-deleted-posts')
+            if post_response.status_code == 200:
+                posts_data = post_response.json()
+            else:
+                return {'error': f'Failed to fetch posts, status code: {post_response.status_code}'}
+        except ValueError:
+            return {'error': 'Invalid JSON response from posts service'}
+
+        aggregated_data_list = []
+
+        for post in posts_data:
+            user_id = post['userId']
+            try:
+                user_response = requests.get(f'{self.user_service_url}/{user_id}')
+                if user_response.status_code == 200:
+                    user_data = user_response.json()
+                    aggregated_data = {
+                        'postId': post['postId'],
+                        'firstName': user_data.get('firstName'),
+                        'lastName': user_data.get('lastName'),
+                        'date': post['dateModified'] if post.get('dateModified') else post['dateCreated'],
+                        'title': post['title'],
+                    }
+                    aggregated_data_list.append(aggregated_data)
+                else:
+                    aggregated_data_list.append({
+                        'error': f'User details for userId {user_id} could not be fetched, status code: {user_response.status_code}'
+                    })
+            except ValueError:
+                aggregated_data_list.append({'error': f'Invalid JSON response for user with ID {user_id}'})
+
+        return aggregated_data_list
+
+    def get_admin_home(self):
+        token = request.headers.get('Authorization')
+        print(token)
+
+        response_structure = {
+            'published_posts': [],
+            'banned_posts': [],
+            'deleted_posts': []
+        }
+
+        # URLs for each post type
+        published_url = f'{self.post_and_reply_service_url}/published-post'
+        banned_url = f'{self.post_and_reply_service_url}/all-banned-posts'
+        deleted_url = f'{self.post_and_reply_service_url}/all-deleted-posts'
+
+        # Fetch and process published posts
+        published_posts = self.fetch_and_process_posts(published_url, token)
+        response_structure['published_posts'] = published_posts
+
+        # Fetch and process banned posts
+        banned_posts = self.fetch_and_process_posts(banned_url, token)
+        response_structure['banned_posts'] = banned_posts
+
+        # Fetch and process deleted posts
+        deleted_posts = self.fetch_and_process_posts(deleted_url, token)
+        response_structure['deleted_posts'] = deleted_posts
+
+        return response_structure
+
+    def fetch_and_process_posts(self, url, token):
+        headers = {'Authorization': f'{token}'}
+        try:
+            post_response = requests.get(url, headers=headers)
+            if post_response.status_code == 200:
+                posts_data = post_response.json()
+                aggregated_posts = []
+                for post in posts_data:
+                    user_response = requests.get(f'{self.user_service_url}/{post["userId"]}')
+                    if user_response.status_code == 200:
+                        user_data = user_response.json()
+                        post_data = self.aggregate_post_data(post, user_data)
+                        aggregated_posts.append(post_data)
+                    else:
+                        aggregated_posts.append({'error': 'User details could not be fetched'})
+                return aggregated_posts
+            else:
+                return [{'error': 'Failed to fetch posts'}]
+        except ValueError:
+            return [{'error': 'Invalid JSON response from posts service'}]
+
+    def aggregate_post_data(self, post, user_data):
+        return {
+            'postId': post['postId'],
+            'firstName': user_data.get('firstName'),
+            'lastName': user_data.get('lastName'),
+            'date': post['dateModified'] if post.get('dateModified') else post['dateCreated'],
+            'title': post['title'],
+        }
+
+

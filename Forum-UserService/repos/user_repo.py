@@ -91,3 +91,6 @@ class UserRepository:
             return True, f"User {user.email} upgraded to admin."
         return False, "User not found."
 
+    def get_all_user_repo(self):
+        all_users = db.query(User).all()
+        return all_users

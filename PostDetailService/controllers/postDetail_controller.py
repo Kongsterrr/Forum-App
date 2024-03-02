@@ -1,6 +1,8 @@
 from flask import jsonify, request
 from flask.views import MethodView
 from services.postDetail_service import PostDetailService
+from aop.decorators import token_required
+
 
 
 class PostDetailView(MethodView):
@@ -20,4 +22,15 @@ class UserHomeView(MethodView):
 
     def get(self):
         user_home = self.user_home_service.get_user_home()
+        return jsonify(user_home), 200
+
+
+class AdminHomeView(MethodView):
+
+    def __init__(self):
+        self.admin_home_service = PostDetailService()
+
+    @token_required
+    def get(self, user_id, user_status):
+        user_home = self.admin_home_service.get_admin_home()
         return jsonify(user_home), 200

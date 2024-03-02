@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from controllers.user_controller import UserEmailVerificationView, UserRegisterView, UserLoginView, UserProfileView, UserStatusUpgradeView, UserProfileUpdateView
+from controllers.user_controller import UserEmailVerificationView, UserRegisterView, UserLoginView, UserProfileView, UserStatusUpgradeView, UserProfileUpdateView, AdminAllUserProfileView
 
 user_blueprint = Blueprint('users', __name__, url_prefix='/users')
 # user_blueprint.add_url_rule('/<int:user_id>', view_func=UserView.as_view('user'), methods=['GET', 'PUT'])
@@ -10,5 +10,5 @@ user_blueprint.add_url_rule('/<int:user_id>', view_func=UserProfileView.as_view(
 user_blueprint.add_url_rule('/email/<int:user_id>', view_func=UserEmailVerificationView.as_view('send-email'), methods=['GET', 'POST'])
 user_blueprint.add_url_rule('/upgrade/<int:userId>', view_func=UserStatusUpgradeView.as_view('upgrade-admin'), methods=['PUT'])
 user_blueprint.add_url_rule('/profile/update/<int:user_id>', view_func=UserProfileUpdateView.as_view('user-update'), methods=['POST'])
-
+user_blueprint.add_url_rule('/all', view_func=AdminAllUserProfileView.as_view('all_users'), methods=['GET'])
 

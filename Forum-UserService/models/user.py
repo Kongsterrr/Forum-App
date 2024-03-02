@@ -22,4 +22,8 @@ class User(Base):
         return {
             'firstName': self.firstName,
             'lastName': self.lastName,
+            'dateJoined': self.dateJoined.strftime('%Y-%m-%d'),
+            'profileImageURL': self.profileImageURL,
+            'type': self.type,
+            'userId': self.userId
         }

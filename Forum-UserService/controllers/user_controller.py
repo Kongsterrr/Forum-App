@@ -41,7 +41,7 @@ class UserProfileView(MethodView):
     def get(self, user_id):
         user_profile = self.user_service.get_user_profile(user_id)
         if user_profile:
-            return jsonify(user_profile), 200
+            return jsonify(user_profile.serialize()), 200
         else:
             return jsonify({"message": "User not found"}), 404
 
@@ -103,3 +103,16 @@ class UserStatusUpgradeView(MethodView):
             return jsonify({'message': message}), 200
         else:
             return jsonify({'error': message}), 404
+
+
+class AdminAllUserProfileView(MethodView):
+    def __init__(self):
+        self.user_service = UserService()
+
+    @token_required
+    def get(self, user_id, user_status):
+        success, result = self.user_service.get_all_user(user_status)
+        if not success:
+            return jsonify({'error': result}), 403
+        return jsonify([user.serialize() for user in result]), 200
+

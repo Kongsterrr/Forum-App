@@ -59,13 +59,14 @@ class UserService:
         if not user:
             raise NotFoundException('User not found')
 
-        return {
-            "profileImage": user.profileImageURL,
-            "firstName": user.firstName,
-            "lastName": user.lastName,
-            "dateJoined": user.dateJoined.strftime('%Y-%m-%d')
-        }
-    
+        # return {
+        #     "profileImage": user.profileImageURL,
+        #     "firstName": user.firstName,
+        #     "lastName": user.lastName,
+        #     "dateJoined": user.dateJoined.strftime('%Y-%m-%d')
+        # }
+        return user
+
     def generate_verification_code(self):
         return str(random.randint(100000, 999999))
     
@@ -131,6 +132,12 @@ class UserService:
         self.user_repository.update_user_email(user_id, user_email)
         self.send_verification_code(user_id)
         return {"Message": "Email sent to the user for update."}
+
+    def get_all_user(self, user_status):
+        if user_status != "Admin":
+            return False, "Insufficient permissions to view all users."
+        all_users = self.user_repository.get_all_user_repo()
+        return True, all_users
 
     
 
