@@ -18,5 +18,7 @@ class PostHistoryService:
         for history in histories:
             post_response = requests.get(self.post_reply_url + '/' + str(history["postId"]))
             post = post_response.json()
+            post["dateViewed"] = history["viewDate"]
             post_history.append(post)
+        post_history.sort(key=lambda x: x["dateViewed"])
         return post_history
