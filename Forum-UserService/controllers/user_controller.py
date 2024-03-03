@@ -49,12 +49,16 @@ class UserEmailVerificationView(MethodView):
     def __init__(self):
         self.user_service = UserService()
 
-    def get(self, user_id):
+    @token_required
+    def get(self, user_id, user_status):
         return jsonify(self.user_service.send_verification_code(user_id))
     
-    def post(self, user_id):
+    @token_required
+    def post(self, user_id, user_status):
 
         data = request.get_json()
+
+        print(data)
 
         if 'verification_code' not in data:
             return jsonify({'error': 'Verification code not provided'}), 400

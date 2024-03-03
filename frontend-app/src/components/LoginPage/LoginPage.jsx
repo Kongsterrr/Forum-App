@@ -5,7 +5,7 @@ function LoginPage() {
   const handleLogin = (token) => {
     localStorage.setItem('token', token);
     console.log('User logged in successfully');
-    window.location.href = '/';
+    window.location.href = '/email-verify';
   };
 
   return (

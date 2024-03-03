@@ -9,6 +9,7 @@ import AdminHomePage from "./components/HomePage(Admin)/AdminHomePage.jsx";
 import UserManagementPage from "./components/UserManagementPage(Admin)/UserManagementPage.jsx";
 import RegisterPage from './components/RegisterPage/RegisterPage.jsx';
 import LoginPage from './components/LoginPage/LoginPage.jsx';
+import EmailVerificationPage from './components/EmailVerificationPage/EmailVerificationPage.jsx';
 
 
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="/user-management" element={<UserManagementPage/>} />
           <Route path="/register" element={<RegisterPage/>} />
           <Route path="/login" element={<LoginPage/>} />
+          <Route path="/email-verify" element={<EmailVerificationPage/>} />
       </Routes>
     </Router>
   )
