@@ -11,6 +11,7 @@ class UserRegisterView(MethodView):
         user_data = request.get_json()
         success, message, user_id = self.auth_service.create_user(user_data)
         if success:
+            print("register success!")
             return jsonify({'message': message, 'user_id': user_id}), 201
         else:
             return jsonify({'message': message, 'user_id': user_id}), 400

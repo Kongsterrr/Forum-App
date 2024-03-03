@@ -51,6 +51,7 @@ class AuthService:
         
         else:
             return {"login status": "Failure", "token": None}
+        
 
     def send_email_to_queue(self, receiver_email, verification_code):
         message = f'{receiver_email}, {verification_code}'

@@ -7,6 +7,8 @@ import HomePage from "./components/HomePage/HomePage";
 import PostDetailPage from "./components/PostDetailPage/PostDetailPage";
 import AdminHomePage from "./components/HomePage(Admin)/AdminHomePage.jsx";
 import UserManagementPage from "./components/UserManagementPage(Admin)/UserManagementPage.jsx";
+import RegisterPage from './components/RegisterPage/RegisterPage.jsx';
+import LoginPage from './components/LoginPage/LoginPage.jsx';
 
 
 
@@ -19,6 +21,8 @@ function App() {
           <Route path="/post/:postId" element={<PostDetailPage/>} />
           <Route path="/admin" element={<AdminHomePage/>} />
           <Route path="/user-management" element={<UserManagementPage/>} />
+          <Route path="/register" element={<RegisterPage/>} />
+          <Route path="/login" element={<LoginPage/>} />
       </Routes>
     </Router>
   )
