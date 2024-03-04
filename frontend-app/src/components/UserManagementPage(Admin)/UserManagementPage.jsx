@@ -75,7 +75,7 @@ export default function AdminHomePage() {
                       <td>{user.dateJoined}</td>
                       <td>{user.type}</td>
                       <td>
-                          {user.type !== 'Admin' && user.type !== 'SuperAdmin' &&( // Assuming 'type' field indicates if a user is an admin
+                          {user.type !== 'Admin' && user.type !== 'SuperAdmin' &&(
                               user.active === true ? (
                                   <button onClick={() => handleBan(user.userId)}>Ban</button>
                               ) : (
