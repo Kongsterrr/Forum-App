@@ -139,5 +139,18 @@ class UserService:
         all_users = self.user_repository.get_all_user_repo()
         return True, all_users
 
+    def ban_user(self, userId, user_status):
+        if user_status != "Admin":
+            return False, "Insufficient permissions to ban this users."
+        banned_user = self.user_repository.ban_user_repo(userId)
+        return True, banned_user
+
+    def unban_user(self, userId, user_status):
+        if user_status != "Admin":
+            return False, "Insufficient permissions to unban this users."
+        unbanned_user = self.user_repository.unban_user_repo(userId)
+        return True, unbanned_user
+
+
     
 

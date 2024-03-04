@@ -6,8 +6,9 @@ export default function AdminHomePage() {
   // for testing purpose
   localStorage.setItem('token', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo5LCJ1c2VyX3N0YXR1cyI6IkFkbWluIiwiZXhwIjoxNzEwMDExOTAzfQ.qk3KkZHajW1ip915L7ExHyVj7wLbq8D-X1QdesruUxk');
 
+  const token = localStorage.getItem('token');
+
   const fetchUsersData = async () => {
-    const token = localStorage.getItem('token');
     try {
       const response = await fetch('http://127.0.0.1:5000/users/all', {
         headers: {
@@ -25,6 +26,32 @@ export default function AdminHomePage() {
     fetchUsersData();
   }, []);
 
+  const handleBan = async (userId) => {
+    try {
+      await fetch(`http://127.0.0.1:5000/users/ban/${userId}`, {
+        method: 'PUT',
+        headers: { 'Authorization': `${token}` }
+      });
+      fetchUsersData();
+    } catch (error) {
+      console.error('Failed to ban user:', error);
+    }
+  };
+
+  const handleUnban = async (userId) => {
+    try {
+      await fetch(`http://127.0.0.1:5000/users/unban/${userId}`, {
+        method: 'PUT',
+        headers: { 'Authorization': `${token}` }
+      });
+      fetchUsersData();
+    } catch (error) {
+      console.error('Failed to unban user:', error);
+    }
+  };
+
+
+
   return (
       <div>
           <h1>User Management</h1>
@@ -36,6 +63,7 @@ export default function AdminHomePage() {
                   <th>Email</th>
                   <th>Date Joined</th>
                   <th>Type</th>
+                  <th>Status</th>
               </tr>
               </thead>
               <tbody>
@@ -46,6 +74,15 @@ export default function AdminHomePage() {
                       <td>{user.email}</td>
                       <td>{user.dateJoined}</td>
                       <td>{user.type}</td>
+                      <td>
+                          {user.type !== 'Admin' && user.type !== 'SuperAdmin' &&(
+                              user.active === true ? (
+                                  <button onClick={() => handleBan(user.userId)}>Ban</button>
+                              ) : (
+                                  <button onClick={() => handleUnban(user.userId)}>Unban</button>
+                              )
+                          )}
+                      </td>
                   </tr>
               ))}
               </tbody>

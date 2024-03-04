@@ -94,3 +94,22 @@ class UserRepository:
     def get_all_user_repo(self):
         all_users = db.query(User).all()
         return all_users
+
+    def ban_user_repo(self, userId):
+        user = db.query(User).get(userId)
+        if user and user.type == "Normal" and user.active == True:
+            user.active = False
+            db.commit()
+            return True, f"User {user.email} banned successfully."
+        return False, "User not found."
+
+    def unban_user_repo(self, userId):
+        user = db.query(User).get(userId)
+        if user and user.type == "Normal" and user.active == False:
+            user.active = True
+            db.commit()
+            return True, f"User {user.email} unbanned successfully."
+        return False, "User not found."
+
+
+
