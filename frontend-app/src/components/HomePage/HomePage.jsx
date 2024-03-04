@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import UserCard from "../UserCard/UserCard";
 import { useState } from "react";
 import PostCard from "../PostCard/PostCard";
+import { Link } from "react-router-dom";
+
 // import CreatePostModal from "./CreatePostModal";
 
 export default function HomePage() {
@@ -13,7 +15,7 @@ export default function HomePage() {
         last_name: "",
         date: "",
     }])
-    const [showCreatePostModal, setShowCreatePostModal] = useState(false);
+    // const [showCreatePostModal, setShowCreatePostModal] = useState(false);
 
 
     const fetchPosts = async () => {
@@ -56,61 +58,63 @@ export default function HomePage() {
             <h1>Home Page</h1>
             <p>Welcome to the home page of the Forum App.</p>
 
-            <button onClick={() => setShowCreatePostModal(true)}>Create Post</button>
+            {/* <button onClick={() => setShowCreatePostModal(true)}>Create Post</button> */}
 
-            {showCreatePostModal && (
+            {/* {showCreatePostModal && (
                 <CreatePostModal onClose={() => setShowCreatePostModal(false)} onCreatePost={handleCreatePost} />
-            )}
+            )} */}
 
             <div>
                 {allPosts.map((post, index) => (
-                    <PostCard key={index} post={post} />
+                    <Link to={`/post/${post.postId}`}>
+                        <PostCard key={index} post={post} />
+                    </Link>
                 ))}
             </div>
-        </div>
+    </div>
     );
 }
 
-function CreatePostModal({ onClose, onCreatePost }) {
-    const [postData, setPostData] = useState({
-        title: "",
-        content: "",
-        isArchived: false,
-        status: "Published"
-    });
+// function CreatePostModal({ onClose, onCreatePost }) {
+//     const [postData, setPostData] = useState({
+//         title: "",
+//         content: "",
+//         isArchived: false,
+//         status: "Published"
+//     });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setPostData((prevData) => ({
-            ...prevData,
-            [name]: value
-        }));
-    };
+//     const handleChange = (e) => {
+//         const { name, value } = e.target;
+//         setPostData((prevData) => ({
+//             ...prevData,
+//             [name]: value
+//         }));
+//     };
 
-    const handleSubmit = () => {
-        console.log(postData["title"]);
-        console.log(postData["content"]);
-        console.log(postData);
-        onCreatePost(postData);
-    };
+//     const handleSubmit = () => {
+//         console.log(postData["title"]);
+//         console.log(postData["content"]);
+//         console.log(postData);
+//         onCreatePost(postData);
+//     };
 
-    return (
-        <div className="modal">
-            <div className="modal-content">
-                <span className="close" onClick={onClose}>&times;</span>
-                <h2>Create Post</h2>
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        Title:
-                        <input type="text" name="title" value={postData.title} onChange={handleChange} required />
-                    </label>
-                    <label>
-                        Content:
-                        <textarea name="content" value={postData.content} onChange={handleChange} required />
-                    </label>
-                    <button type="submit">Create</button>
-                </form>
-            </div>
-        </div>
-    );
-}
+//     return (
+//         <div className="modal">
+//             <div className="modal-content">
+//                 <span className="close" onClick={onClose}>&times;</span>
+//                 <h2>Create Post</h2>
+//                 <form onSubmit={handleSubmit}>
+//                     <label>
+//                         Title:
+//                         <input type="text" name="title" value={postData.title} onChange={handleChange} required />
+//                     </label>
+//                     <label>
+//                         Content:
+//                         <textarea name="content" value={postData.content} onChange={handleChange} required />
+//                     </label>
+//                     <button type="submit">Create</button>
+//                 </form>
+//             </div>
+//         </div>
+//     );
+// }

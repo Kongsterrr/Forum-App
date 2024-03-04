@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 export default function PostDetailPage({  }) {
@@ -13,20 +13,26 @@ export default function PostDetailPage({  }) {
         content: "",
     }])
 
-  useEffect(async () => {
-    console.log(postId);
-    const response = await fetch(`http://127.0.0.1:5000/post-details/${postId}`);
-    console.log("aaa");
-    console.log(response);
-    // console.log(response.json());
-    const data = await response.json();
-    setPostItem(data);
-    console.log(data);
-  }, []);
+  const fetchPost = async () => {
+    try {
+        const response = await fetch(`http://127.0.0.1:5000/post-details/${postId}`);
+        if (!response.ok) {
+            throw new Error("Failed to fetch post details");
+        }
+        const data = await response.json();
+        setPostItem(data);
+    } catch (error) {
+        console.error("Error fetching post:", error);
+    }
+};
 
+  useEffect(() => {
+    fetchPost();
+  }, []);
 
     return (
         <div>
+            <Link to={`/home`}>Back to Home</Link>
             <h1>Post Detail Page</h1>
             <h2>{postItem.title}</h2>
             <p>{postItem.firstName} {postItem.lastName}</p>
