@@ -18,7 +18,7 @@ function App() {
   return (
     <Router>
       <Routes>
-          <Route path="/" element={<HomePage/>} />
+          <Route path="/home" element={<HomePage/>} />
           <Route path="/post/:postId" element={<PostDetailPage/>} />
           <Route path="/admin" element={<AdminHomePage/>} />
           <Route path="/user-management" element={<UserManagementPage/>} />
