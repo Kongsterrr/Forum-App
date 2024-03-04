@@ -25,5 +25,6 @@ class User(Base):
             'dateJoined': self.dateJoined.strftime('%Y-%m-%d'),
             'profileImageURL': self.profileImageURL,
             'type': self.type,
-            'userId': self.userId
+            'userId': self.userId,
+            'active': self.active
         }

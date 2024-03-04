@@ -120,3 +120,29 @@ class AdminAllUserProfileView(MethodView):
             return jsonify({'error': result}), 403
         return jsonify([user.serialize() for user in result]), 200
 
+
+class BanUserView(MethodView):
+    def __init__(self):
+        self.user_service = UserService()
+
+    @token_required
+    def put(self, userId, user_id, user_status):
+        success, result = self.user_service.ban_user(userId, user_status)
+        if success:
+            return jsonify({'results': result}), 200
+        else:
+            return jsonify({'error': result}), 404
+
+
+class UnBanUserView(MethodView):
+    def __init__(self):
+        self.user_service = UserService()
+
+    @token_required
+    def put(self, userId, user_id, user_status):
+        success, result = self.user_service.unban_user(userId, user_status)
+        if success:
+            return jsonify({'results': result}), 200
+        else:
+            return jsonify({'error': result}), 404
+
