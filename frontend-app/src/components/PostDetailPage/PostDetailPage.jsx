@@ -1,6 +1,8 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import AddReplyPage from "./AddReplyPage";
+
 
 export default function PostDetailPage({  }) {
 
@@ -17,6 +19,11 @@ export default function PostDetailPage({  }) {
         profileImage: ""
     }
   });
+
+  const [showAddReply, setShowAddReply] = useState(false);
+  const toggleAddReply = () => {
+    setShowAddReply(!showAddReply);
+  };
 
   const fetchPost = async () => {
     try {
@@ -60,10 +67,12 @@ export default function PostDetailPage({  }) {
     return (
         <div>
             <Link to={`/home`}>Back to Home</Link>
-            <h1>Post Detail Page</h1>
             <h2>{postItem.title}</h2>
             <p>Posted By: {postItem.user.firstName} {postItem.user.lastName} on {postItem.dateCreated}</p>
             <p>{postItem.content}</p>
+            <br></br>
+            
+            <h2>Replies:</h2>
             <ul>
                 {postItem.replies.map((reply) => (
                     <li key={reply.id}>
@@ -72,6 +81,11 @@ export default function PostDetailPage({  }) {
                     </li>
                 ))}
             </ul>
+
+            <button onClick={toggleAddReply}>Reply to the Post</button>
+
+            <AddReplyPage open={showAddReply} onClose={toggleAddReply} postId={postId} fetchPost={fetchPost} />
+
             
         </div>
     );

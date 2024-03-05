@@ -1,56 +1,32 @@
-import React, { useEffect } from "react";
-import UserCard from "../UserCard/UserCard";
-import { useState } from "react";
-import PostCard from "../PostCard/PostCard";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-// import CreatePostModal from "./CreatePostModal";
+import AddPostPage from "./AddPostPage";
+import PostCard from "../PostCard/PostCard";
+import "./AddPostPage.css";
 
 export default function HomePage() {
-    
-    let [allPosts, setAllPosts] = useState([])
-    let [postItem, setPostItem] = useState([{
-        title: "",
-        first_name: "",
-        last_name: "",
-        date: "",
-    }])
-    // const [showCreatePostModal, setShowCreatePostModal] = useState(false);
-
-
-    const fetchPosts = async () => {
-        const response = await fetch("http://127.0.0.1:5000/post-details/");
-        const data = await response.json();
-        const allPostsData = [];
-        for (let i = 0; i < data.length; i++) {
-            if ("title" in data[i] && "firstName" in data[i] && "lastName" in data[i] && "date" in data[i]) {
-                allPostsData.push(data[i]);
-            }
-        }
-        setAllPosts(allPostsData);
-    }
+    const [allPosts, setAllPosts] = useState([]);
+    const [showAddPost, setShowAddPost] = useState(false);
 
     useEffect(() => {
+        console.log(localStorage.getItem("token"));
         fetchPosts();
     }, []);
 
-    const handleCreatePost = async (postData) => {
+    const fetchPosts = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:5000/post_and_reply/", {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
-                },
-                body: JSON.stringify(postData)
-            });
-            if (!response.ok) {
-                throw new Error("Failed to create post");
-            }
-            // fetchPosts();
-            // setShowCreatePostModal(false);
+            const response = await fetch("http://127.0.0.1:5000/post-details/");
+            const data = await response.json();
+            setAllPosts(data.filter(post => post.title && post.firstName && post.lastName && post.date));
         } catch (error) {
-            console.error("Error creating post:", error);
+            console.error("Error fetching posts:", error);
         }
+    };
+
+    const toggleAddPost = () => {
+        setShowAddPost(!showAddPost);
+        console.log("showAddPost:", !showAddPost);
+
     };
 
     return (
@@ -58,63 +34,17 @@ export default function HomePage() {
             <h1>Home Page</h1>
             <p>Welcome to the home page of the Forum App.</p>
 
-            {/* <button onClick={() => setShowCreatePostModal(true)}>Create Post</button> */}
+            <button onClick={toggleAddPost}>Create a Post</button>
 
-            {/* {showCreatePostModal && (
-                <CreatePostModal onClose={() => setShowCreatePostModal(false)} onCreatePost={handleCreatePost} />
-            )} */}
+            <AddPostPage open={showAddPost} onClose={toggleAddPost} fetchPosts={fetchPosts} />
 
             <div>
                 {allPosts.map((post, index) => (
-                    <Link to={`/post/${post.postId}`}>
-                        <PostCard key={index} post={post} />
+                    <Link to={`/post/${post.postId}`} key={index}>
+                        <PostCard post={post} />
                     </Link>
                 ))}
             </div>
-    </div>
+        </div>
     );
 }
-
-// function CreatePostModal({ onClose, onCreatePost }) {
-//     const [postData, setPostData] = useState({
-//         title: "",
-//         content: "",
-//         isArchived: false,
-//         status: "Published"
-//     });
-
-//     const handleChange = (e) => {
-//         const { name, value } = e.target;
-//         setPostData((prevData) => ({
-//             ...prevData,
-//             [name]: value
-//         }));
-//     };
-
-//     const handleSubmit = () => {
-//         console.log(postData["title"]);
-//         console.log(postData["content"]);
-//         console.log(postData);
-//         onCreatePost(postData);
-//     };
-
-//     return (
-//         <div className="modal">
-//             <div className="modal-content">
-//                 <span className="close" onClick={onClose}>&times;</span>
-//                 <h2>Create Post</h2>
-//                 <form onSubmit={handleSubmit}>
-//                     <label>
-//                         Title:
-//                         <input type="text" name="title" value={postData.title} onChange={handleChange} required />
-//                     </label>
-//                     <label>
-//                         Content:
-//                         <textarea name="content" value={postData.content} onChange={handleChange} required />
-//                     </label>
-//                     <button type="submit">Create</button>
-//                 </form>
-//             </div>
-//         </div>
-//     );
-// }
