@@ -5,13 +5,16 @@ import { fetchPosts, banPost, unbanPost, recoverPost } from '../../store/actions
 
 export default function AdminHomePage() {
   const dispatch = useDispatch();
-  const {postsData} = useSelector(state => state.adminHome);
+  const {postsData, error} = useSelector(state => state.adminHome);
 
   useEffect(() => {
-    dispatch(fetchPosts()); // Fetch posts when component mounts
+    dispatch(fetchPosts());
   }, [dispatch]);
 
-  // Handlers for ban, unban, and recover actions
+  if (error) {
+    return <div>{error.toString()}</div>;
+  }
+
   const handleBan = (postId) => {
     dispatch(banPost(postId));
   };

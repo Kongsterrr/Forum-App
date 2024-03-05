@@ -5,11 +5,15 @@ import { fetchUsers, banUser, unbanUser } from '../../store/actions/UserManageme
 
 export default function UserManagementPage() {
   const dispatch = useDispatch();
-  const usersData = useSelector(state => state.userManage.usersData);
+  const {usersData, error} = useSelector(state => state.userManage);
 
   useEffect(() => {
     dispatch(fetchUsers());
   }, [dispatch]);
+
+  if (error) {
+    return <div>{error.toString()}</div>;
+  }
 
   const handleBan = (userId) => {
     dispatch(banUser(userId));

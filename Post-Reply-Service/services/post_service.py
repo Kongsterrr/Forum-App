@@ -46,6 +46,7 @@ class PostService:
             # post_data['status'] = 'Published'
             post_data['userId'] = user_id
 
+
             # Upload images or attachments to S3 bucket
             if 'images' in post_data:
                 images = post_data['images']

@@ -4,7 +4,7 @@ export const UPDATE_USER_STATUS_SUCCESS = 'UPDATE_USER_STATUS_SUCCESS';
 export const UPDATE_USER_STATUS_FAILURE = 'UPDATE_USER_STATUS_FAILURE';
 
 
-localStorage.setItem('token', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo5LCJ1c2VyX3N0YXR1cyI6IkFkbWluIiwiZXhwIjoxNzEwMTg5MDgyfQ.GasMqXCzG0iltZ0PvA_0prpi4K5Yo_PEeIBBCk-WO4U');
+// localStorage.setItem('token', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo5LCJ1c2VyX3N0YXR1cyI6IkFkbWluIiwiZXhwIjoxNzEwMTg5MDgyfQ.GasMqXCzG0iltZ0PvA_0prpi4K5Yo_PEeIBBCk-WO4U');
 
 const token = localStorage.getItem('token');
 
@@ -15,9 +15,17 @@ export const fetchUsers = () => async (dispatch) => {
           'Authorization': `${token}`
         }
       });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error);
+      }
+
       const data = await response.json();
+
       dispatch({type: FETCH_USERS_SUCCESS, payload: data})
+
     } catch (error) {
+      console.log("I am here")
       dispatch({type: FETCH_USERS_FAILURE, payload: error})
 
     }
