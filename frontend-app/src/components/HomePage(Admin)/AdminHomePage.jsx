@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts, banPost, unbanPost, recoverPost } from '../../store/actions/AdminHomeActions'; // Adjust import paths as necessary
+import { fetchPosts, banPost, unbanPost, recoverPost } from '../../store/actions/AdminHomeActions';
 
 
 export default function AdminHomePage() {
