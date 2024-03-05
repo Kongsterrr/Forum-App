@@ -1,15 +1,24 @@
 // AdminHomePage.jsx
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUsers, banUser, unbanUser } from '../../store/actions/UserManagementActions'; // Adjust the import paths
+import { fetchUsers, banUser, unbanUser } from '../../store/actions/UserManagementActions';
+import {useNavigate} from "react-router-dom";
 
 export default function UserManagementPage() {
   const dispatch = useDispatch();
-  const usersData = useSelector(state => state.userManage.usersData);
+  const navigate = useNavigate();
+  const {usersData, error} = useSelector(state => state.userManage);
 
   useEffect(() => {
     dispatch(fetchUsers());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      alert(error.toString());
+      navigate('/home');
+    }
+  }, [error, navigate]);
 
   const handleBan = (userId) => {
     dispatch(banUser(userId));

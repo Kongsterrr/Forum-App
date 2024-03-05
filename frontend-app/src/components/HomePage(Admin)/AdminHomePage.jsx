@@ -1,17 +1,25 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts, banPost, unbanPost, recoverPost } from '../../store/actions/AdminHomeActions';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function AdminHomePage() {
   const dispatch = useDispatch();
-  const {postsData} = useSelector(state => state.adminHome);
+  const navigate = useNavigate();
+  const {postsData, error} = useSelector(state => state.adminHome);
 
   useEffect(() => {
-    dispatch(fetchPosts()); // Fetch posts when component mounts
+    dispatch(fetchPosts());
   }, [dispatch]);
 
-  // Handlers for ban, unban, and recover actions
+  useEffect(() => {
+    if (error) {
+      alert(error.toString());
+      navigate('/home');
+    }
+  }, [error, navigate]);
+
   const handleBan = (postId) => {
     dispatch(banPost(postId));
   };

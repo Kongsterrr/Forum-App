@@ -175,9 +175,11 @@ class PostDetailService:
 
         return aggregated_data_list
 
-    def get_admin_home(self):
+    def get_admin_home(self, user_status):
+        if user_status != "Admin":
+            return False, "Insufficient permissions to view the admin page."
+
         token = request.headers.get('Authorization')
-        print(token)
 
         response_structure = {
             'published_posts': [],
@@ -202,7 +204,7 @@ class PostDetailService:
         deleted_posts = self.fetch_and_process_posts(deleted_url, token)
         response_structure['deleted_posts'] = deleted_posts
 
-        return response_structure
+        return True, response_structure
 
     def fetch_and_process_posts(self, url, token):
         headers = {'Authorization': f'{token}'}

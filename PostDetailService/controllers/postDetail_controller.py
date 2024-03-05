@@ -32,5 +32,7 @@ class AdminHomeView(MethodView):
 
     @token_required
     def get(self, user_id, user_status):
-        user_home = self.admin_home_service.get_admin_home()
+        success, user_home = self.admin_home_service.get_admin_home(user_status)
+        if not success:
+            return jsonify({'error': user_home}), 403
         return jsonify(user_home), 200

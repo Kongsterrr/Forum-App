@@ -1,4 +1,4 @@
-// AdminHomeReducer.jsx
+
 import { FETCH_POSTS_SUCCESS, FETCH_POSTS_FAILURE, UPDATE_POST_STATUS_SUCCESS, UPDATE_POST_STATUS_FAILURE } from '../actions/AdminHomeActions';
 
 const initialState = {
