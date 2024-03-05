@@ -10,25 +10,35 @@ import UserManagementPage from "./components/UserManagementPage(Admin)/UserManag
 import RegisterPage from './components/RegisterPage/RegisterPage.jsx';
 import LoginPage from './components/LoginPage/LoginPage.jsx';
 import EmailVerificationPage from './components/EmailVerificationPage/EmailVerificationPage.jsx';
+import NavBar from './components/NavBar';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 
 
 function App() {
 
+  const userGroup = 'admin';
+
   return (
-    <Router>
-      <Routes>
-          <Route path="/home" element={<HomePage/>} />
-          <Route path="/post/:postId" element={<PostDetailPage/>} />
-          <Route path="/admin" element={<AdminHomePage/>} />
-          <Route path="/user-management" element={<UserManagementPage/>} />
-          <Route path="/register" element={<RegisterPage/>} />
-          <Route path="/login" element={<LoginPage/>} />
-          <Route path="/email-verify" element={<EmailVerificationPage/>} />
-      </Routes>
-    </Router>
-  )
+      <Router>
+          <NavBar userGroup={userGroup}/>
+
+      <div className="main-content">
+          <Routes>
+              <Route path="/home" element={<HomePage/>}/>
+              <Route path="/post/:postId" element={<PostDetailPage/>}/>
+              <Route path="/admin" element={<AdminHomePage/>}/>
+              <Route path="/user-management" element={<UserManagementPage/>}/>
+              <Route path="/register" element={<RegisterPage/>}/>
+              <Route path="/login" element={<LoginPage/>}/>
+              <Route path="/email-verify" element={<EmailVerificationPage/>}/>
+          </Routes>
+      </div>
+
+      </Router>
+
+    )
 }
 
 export default App
