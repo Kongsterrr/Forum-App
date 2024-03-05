@@ -27,6 +27,8 @@ class EmailService:
         msg = Message('Verification Code', sender="azure.hrj@gmail.com", recipients=[receiver_email])
         msg.body = f'Your verification code is: {verification_code}'
 
+        print('receiver_email is:', receiver_email)
+
         try:
             self.mail.send(msg)
             print('Verification code sent successfully')
