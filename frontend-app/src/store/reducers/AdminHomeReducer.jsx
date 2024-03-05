@@ -61,7 +61,7 @@ const adminHomeReducer = (prevState = initialState, action) => {
           newState.postsData.published_posts.push(postToRemove);
           break;
         case 'recoverDeleted':
-          newState.postsData.deleted_posts.push(postToRemove);
+          newState.postsData.published_posts.push(postToRemove);
           break;
         default:
           console.error('Unhandled newStatus:', newStatus);
