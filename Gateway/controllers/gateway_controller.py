@@ -11,27 +11,57 @@ class GatewayView(MethodView):
 
     def get(self, path):
         url = g.route['url'] + path[path.find('/')+1:]
+
+        # Extract query parameters
+        query_params = request.query_string.decode('utf-8')
+        if query_params:
+            url += '?' + query_params
+        
         headers = self._clean_request_headers()
         raw_response = requests.get(url, stream=True, params=request.args, headers=headers)
         return self._get_response(raw_response), raw_response.status_code
 
     def post(self, path):
         url = g.route['url'] + path[path.find('/')+1:]
+
+        # Extract query parameters
+        query_params = request.query_string.decode('utf-8')
+        if query_params:
+            url += '?' + query_params
+        
         headers = self._clean_request_headers()
         raw_response = requests.post(url, stream=True, data=request.get_data(), headers=headers)
         return self._get_response(raw_response), raw_response.status_code
 
     def put(self, path):
         url = g.route['url'] + path[path.find('/')+1:]
+
+        # Extract query parameters
+        query_params = request.query_string.decode('utf-8')
+        if query_params:
+            url += '?' + query_params
+        
         headers = self._clean_request_headers()
         raw_response = requests.put(url, stream=True, data=request.get_data(), headers=headers)
         return self._get_response(raw_response), raw_response.status_code
 
+    def patch(self, path):
+        url = g.route['url'] + path[path.find('/') + 1:]
+
+        # Extract query parameters
+        query_params = request.query_string.decode('utf-8')
+        if query_params:
+            url += '?' + query_params
+
+        headers = self._clean_request_headers()
+        raw_response = requests.patch(url, stream=True, data=request.get_data(), headers=headers)
+        return self._get_response(raw_response), raw_response.status_code
+    
     def options(self, path):
         # Create a response with CORS headers for OPTIONS requests
         response = Response()
         response.headers['Access-Control-Allow-Origin'] = '*'  # Allow requests from any origin
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'  # Specify allowed methods
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS, PATCH'  # Specify allowed methods
         response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'  # Specify allowed headers
         return response
 
