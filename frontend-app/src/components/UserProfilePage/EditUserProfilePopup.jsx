@@ -15,6 +15,7 @@ function EditProfilePopup({ onClose, onSave, currentFirstName, currentLastName, 
   }, [currentFirstName, currentLastName, currentEmail, currentProfileImage]);
   
   const handleSave = () => {
+    console.log({ firstName, lastName, email, profileImage })
     onSave({ firstName, lastName, email, profileImage });
     onClose();
   };
@@ -23,6 +24,11 @@ function EditProfilePopup({ onClose, onSave, currentFirstName, currentLastName, 
     onClose();
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    const imageUrl = URL.createObjectURL(file);
+    setProfileImage(imageUrl); // Update profileImage state with file path
+  };
 
   return (
     <div>
@@ -55,12 +61,12 @@ function EditProfilePopup({ onClose, onSave, currentFirstName, currentLastName, 
         />
       </div>
       <div>
-        <label htmlFor="profileImage">Profile Image URL:</label>
+        <label htmlFor="profileImage">Profile Image:</label>
         <input
-          type="text"
+          type="file"
           id="profileImage"
-          value={profileImage}
-          onChange={(e) => setProfileImage(e.target.value)}
+          accept="image/*"
+          onChange={handleFileChange}
         />
       </div>
       <div>
