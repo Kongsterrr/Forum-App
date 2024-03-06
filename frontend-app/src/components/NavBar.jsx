@@ -10,10 +10,12 @@ import {logout} from "../store/actions/LogOutActions.jsx";
 const NavBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user_status = useSelector(state => state.userLogin.userStatus);
+  // const user_status = useSelector(state => state.userLogin.userStatus);
+  const user_status = localStorage.getItem('user_status')
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user_status');
     dispatch(logout());
     navigate('/login');
   };

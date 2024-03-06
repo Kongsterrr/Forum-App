@@ -31,11 +31,11 @@ function App() {
               <Route path="/home" element={<ProtectedRoute> <DynamicRoute /> </ProtectedRoute>}/>
               <Route path="/post/:postId" element={<ProtectedRoute> <PostDetailPage/>  </ProtectedRoute>}/>
               {/*<Route path="/admin" element={<ProtectedRoute> <AdminHomePage/>  </ProtectedRoute>}/>*/}
-              <Route path="/user-management" element={<ProtectedRoute> <UserManagementPage/>  </ProtectedRoute>}/>
+              <Route path="/user-management" element={<ProtectedRoute requiredRoles={['Admin']}> <UserManagementPage/>  </ProtectedRoute>}/>
 
               <Route path="/email-verify" element={<EmailVerificationPage/>}/>
               <Route path="/user-profile" element={<ProtectedRoute> <UserProfilePage/>  </ProtectedRoute>}/>
-              <Route path="/admin/messages" element={<ProtectedRoute> <MessageManagementPage />  </ProtectedRoute>} />
+              <Route path="/admin/messages" element={<ProtectedRoute requiredRoles={['Admin']}> <MessageManagementPage />  </ProtectedRoute>} />
           </Routes>
       </div>
 
