@@ -25,7 +25,7 @@ function LoginPage() {
 
     // console.log("Before dispatch: ", userStatus)
     dispatch({ type: 'SET_USER_STATUS', payload: user_status });
-    // console.log("After dispatch: ", userStatus)
+    console.log("After dispatch: ", userStatus)
     console.log('Actual value: ', user_status)
 
     // Redirect the user based on user_status

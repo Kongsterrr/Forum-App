@@ -4,11 +4,10 @@ export const UPDATE_USER_STATUS_SUCCESS = 'UPDATE_USER_STATUS_SUCCESS';
 export const UPDATE_USER_STATUS_FAILURE = 'UPDATE_USER_STATUS_FAILURE';
 
 
-// localStorage.setItem('token', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo5LCJ1c2VyX3N0YXR1cyI6IkFkbWluIiwiZXhwIjoxNzEwMTg5MDgyfQ.GasMqXCzG0iltZ0PvA_0prpi4K5Yo_PEeIBBCk-WO4U');
-
-const token = localStorage.getItem('token');
 
 export const fetchUsers = () => async (dispatch) => {
+    const token = localStorage.getItem('token');
+
     try {
       const response = await fetch('http://127.0.0.1:5000/users/all', {
         headers: {
