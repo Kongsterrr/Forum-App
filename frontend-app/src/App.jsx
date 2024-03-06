@@ -13,7 +13,7 @@ import EmailVerificationPage from './components/EmailVerificationPage/EmailVerif
 import NavBar from './components/NavBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MessageManagementPage from './components/MessageManagementPage/MessageManagementPage';
-
+import UserProfilePage from './components/UserProfilePage/UserProfilePage.jsx';
 
 
 function App() {
@@ -33,6 +33,7 @@ function App() {
               <Route path="/register" element={<RegisterPage/>}/>
               <Route path="/login" element={<LoginPage/>}/>
               <Route path="/email-verify" element={<EmailVerificationPage/>}/>
+              <Route path="/user-profile" element={<UserProfilePage/>}/>
               <Route path="/admin/messages" element={<MessageManagementPage />} />
           </Routes>
       </div>
