@@ -10,10 +10,12 @@ import {logout} from "../store/actions/LogOutActions.jsx";
 const NavBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user_status = useSelector(state => state.userLogin.userStatus);
+  // const user_status = useSelector(state => state.userLogin.userStatus);
+  const user_status = localStorage.getItem('user_status')
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user_status');
     dispatch(logout());
     navigate('/login');
   };
@@ -35,7 +37,7 @@ const NavBar = () => {
                 )}
                 {user_status === 'Admin' && (
                   <>
-                    <Nav.Link as={NavLink} to="/admin" end>Admin</Nav.Link>
+                    <Nav.Link as={NavLink} to="/home" end>Admin</Nav.Link>
                     <Nav.Link as={NavLink} to="/user-management" end>User Management</Nav.Link>
                   </>
                 )}
