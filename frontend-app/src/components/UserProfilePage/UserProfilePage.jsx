@@ -1,39 +1,70 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import EditProfilePopup from './EditUserProfilePopup';
+import './UserProfile.css'
+// import { useHistory } from 'react-router-dom';
+// import { useSelector } from 'react-redux';
 
 function UserProfilePage() {
-  const history = useHistory();
-  const user = useSelector(state => state.user); 
-  const [profileImage, setProfileImage] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [registrationDate, setRegistrationDate] = useState('');
+    // const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [profileImage, setProfileImage] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [registrationDate, setRegistrationDate] = useState('');
+    const token = localStorage.getItem('token');
+    const default_url = ''
 
-  const fetchUserData = async () => {
-    try {
-      const response = await fetch('API_ENDPOINT_HERE');
-      if (!response.ok) {
-        throw new Error('Failed to fetch user data');
-      }
-      const userData = await response.json();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-      setProfileImage(userData.profileImage);
-      setFirstName(userData.firstName);
-      setLastName(userData.lastName);
-      setRegistrationDate(userData.registrationDate);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-  };
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
-  const handleEditProfile = () => {
-    history.push('/edit-profile');
-  };
+    const handleSave = (updatedUserData) => {
+        console.log('Updated user data:', updatedUserData);
+      };
+    
+    const fetchUserData = async () => {
+        console.log('user profile token:', token)
+        try {
+            const response = await fetch('http://127.0.0.1:5000/users/profile', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                });
+        if (!response.ok) {
+            throw new Error('Failed to fetch user data');
+        }
+        const userData = await response.json();
+
+        console.log(userData)
+
+
+        // Check if profile image present, if not, default pic
+        if (userData.profileImageURL === null){
+            // use default url
+            setProfileImage(default_url)
+        }
+        else{
+            setProfileImage(userData.profileImageURL)
+        }
+
+        setFirstName(userData.firstName);
+        setLastName(userData.lastName);
+        setRegistrationDate(userData.dateJoined);
+        } catch (error) {
+        console.error('Error fetching user data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
 
   return (
     <div>
@@ -46,7 +77,15 @@ function UserProfilePage() {
         <p>Last Name: {lastName}</p>
         <p>Registration Date: {registrationDate}</p>
       </div>
-      <button onClick={handleEditProfile}>Edit Profile</button>
+      <button onClick={openModal}>Edit Profile</button>
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={closeModal}>&times;</span>
+            <EditProfilePopup onSave={handleSave} onClose={closeModal}/>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
