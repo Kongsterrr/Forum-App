@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import EditProfilePopup from './EditUserProfilePopup';
 import './UserProfile.css'
 // import { useHistory } from 'react-router-dom';
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 function UserProfilePage() {
     // const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -12,7 +12,9 @@ function UserProfilePage() {
     const [registrationDate, setRegistrationDate] = useState('');
     const [email, setEmail] = useState('');
     const token = localStorage.getItem('token');
-    const default_url = ''
+    const userStatus = useSelector(state => state.userLogin.userStatus);
+    const default_url = '';
+    
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -78,6 +80,7 @@ function UserProfilePage() {
         <p>First Name: {firstName}</p>
         <p>Last Name: {lastName}</p>
         <p>Registration Date: {registrationDate}</p>
+        <p>User Status: {userStatus}</p>
       </div>
       <button onClick={openModal}>Edit Profile</button>
       {isModalOpen && (
