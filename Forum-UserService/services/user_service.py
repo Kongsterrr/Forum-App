@@ -130,8 +130,9 @@ class UserService:
     
     def update_user_email(self, user_id, user_email):
         self.user_repository.update_user_email(user_id, user_email)
-        self.send_verification_code(user_id)
-        return {"Message": "Email sent to the user for update."}
+        self.user_repository.set_user_status(user_id, "Normal")
+        # self.send_verification_code(user_id)
+        return {"Message": "Email updated in database. Verification required."}
 
     def update_user_profile(self, user_id, profile_data):
 

@@ -15,12 +15,14 @@ class FileService:
         )
 
     def upload_file(self, user_id, file_path):
+        print("Uploading file: ", user_id, file_path)
         try:
             filename = str(user_id) + "-" + secure_filename(file_path.split("/")[-1]) 
             self.s3_client.upload_file(file_path, self.bucket_name, filename)
             url = self.get_file(filename)
             return {'message': 'File uploaded successfully', 'url': url}
         except Exception as e:
+            print(e)
             return {'error': str(e)}
     
     def upload_files(self, user_id, file_paths):

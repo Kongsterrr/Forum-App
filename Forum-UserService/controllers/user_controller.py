@@ -76,8 +76,7 @@ class UserProfileUpdateView(MethodView):
 
         data = request.get_json()
         print(data)
-        return True
-        # return jsonify(self.user_service.update_user_profile(user_id, data))
+        return jsonify(self.user_service.update_user_profile(user_id, data))
         
 
         # if 'update_type' not in data:

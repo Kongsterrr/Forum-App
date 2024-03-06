@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-import { setUserId, setUserStatus } from '../../store/actions/LoginActions';
+import { setUserLoginData } from '../../store/actions/LoginActions';
 import { jwtDecode } from "jwt-decode";
 import LoginForm from './LoginForm';
 
@@ -24,10 +24,8 @@ function LoginPage() {
     localStorage.setItem('user_status', user_status);
     const user_id = decodedToken.user_id; 
 
-    // console.log("Before dispatch: ", userStatus)
-    dispatch(setUserStatus(user_status));
-    dispatch(setUserId(user_id));
-    console.log('Actual value: ', user_status)
+
+    dispatch(setUserLoginData(user_status, user_id))
 
     // Redirect the user based on user_status
     if (user_status === 'Normal') {
