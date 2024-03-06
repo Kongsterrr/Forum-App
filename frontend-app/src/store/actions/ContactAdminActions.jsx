@@ -1,4 +1,4 @@
-const hardcoded_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX3N0YXR1cyI6IkFkbWlubiIsImV4cCI6MTcwOTc2NjE0N30.ZaWKX01NcNPJ1A_TK6LrTTVVJKy2HC1S7DMgZeTRKEk"
+// const hardcoded_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX3N0YXR1cyI6IkFkbWlubiIsImV4cCI6MTcwOTc2NjE0N30.ZaWKX01NcNPJ1A_TK6LrTTVVJKy2HC1S7DMgZeTRKEk"
 
 export const submitMessage = formData => async dispatch => {
     try {
@@ -6,8 +6,8 @@ export const submitMessage = formData => async dispatch => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                // Authorization: `Bearer ${localStorage.getItem('token')}`,
-                Authorization: `Bearer ${hardcoded_token}`,
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                // Authorization: `Bearer ${hardcoded_token}`,
             },
             body: JSON.stringify(formData),
         });
