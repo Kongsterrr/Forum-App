@@ -21,8 +21,7 @@ function AddPostPage({ open, onClose, fetchPosts }) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                // "Authorization": `Bearer ${localStorage.getItem("token")}`
-                "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMjYsInVzZXJfc3RhdHVzIjoiTm9ybWFsIiwiZXhwIjoxNzEwMjE3MzM4fQ.xBuCnpCKDrg0eVa4CdoRcoreBqw0aoNebR6tS0yNdjc`
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
             },
             body: JSON.stringify(postData)
         });

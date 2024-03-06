@@ -38,9 +38,11 @@ const NavBar = () => {
                 )}
                 {user_status === 'Admin' && (
                   <>
-                    <Nav.Link as={NavLink} to="/home" end>Admin</Nav.Link>
+                    <Nav.Link as={NavLink} to="/home" end>Home</Nav.Link>
                     <Nav.Link as={NavLink} to="/user-management" end>User Management</Nav.Link>
+                    <Nav.Link as={NavLink} to="/user-profile" end>Profile</Nav.Link>
                     <Nav.Link as={NavLink} to="/admin/messages" end>Message Management</Nav.Link>
+
                   </>
                 )}
                 <Nav.Link as="button" onClick={handleLogout}>Logout</Nav.Link>

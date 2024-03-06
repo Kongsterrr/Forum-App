@@ -20,8 +20,7 @@ function AddReplyPage({ open, onClose, postId, fetchPost }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMCwidXNlcl9zdGF0dXMiOiJOb3JtYWwiLCJleHAiOjE3MTAyMTgzMzl9.W_cYS1IdKe4PoQ9eeo5MrBTMFGL-0E27FustfBTDFac`
-        //   "Authorization": `Bearer ${localStorage.getItem("token")}`
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
         },
         body: JSON.stringify(replyData)
       });
