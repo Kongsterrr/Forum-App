@@ -1,3 +1,5 @@
+import {LOGOUT} from "../actions/LogOutActions.jsx";
+
 const initialState = {
     userStatus: null,
   };
@@ -8,6 +10,10 @@ const initialState = {
         return {
           ...state,
           userStatus: action.payload,
+        };
+      case LOGOUT:
+        return {
+          ...initialState,
         };
       default:
         return state;

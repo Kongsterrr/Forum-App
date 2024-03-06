@@ -18,11 +18,9 @@ import UserProfilePage from './components/UserProfilePage/UserProfilePage.jsx';
 
 function App() {
 
-  const userGroup = 'admin';
-
   return (
       <Router>
-          <NavBar userGroup={userGroup}/>
+          <NavBar/>
 
       <div className="main-content">
           <Routes>
