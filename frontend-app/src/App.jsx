@@ -14,6 +14,7 @@ import NavBar from './components/NavBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MessageManagementPage from './components/MessageManagementPage/MessageManagementPage';
 import UserProfilePage from './components/UserProfilePage/UserProfilePage.jsx';
+import ContactAdminPage from "./components/ContactAdminPage/ContactAdminPage.jsx";
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
               <Route path="/email-verify" element={<EmailVerificationPage/>}/>
               <Route path="/user-profile" element={<UserProfilePage/>}/>
               <Route path="/admin/messages" element={<MessageManagementPage />} />
+              <Route path="/contact-admin" element={<ContactAdminPage />} />
           </Routes>
       </div>
 
