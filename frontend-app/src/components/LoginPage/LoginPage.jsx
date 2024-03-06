@@ -33,7 +33,7 @@ function LoginPage() {
       navigate('/email-verify');
     } 
     else if (user_status === 'SuperAdmin' || user_status === 'Admin') {
-      navigate('/admin');
+      navigate('/home');
     } 
     else {
       navigate('/user-profile');

@@ -14,7 +14,8 @@ import NavBar from './components/NavBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MessageManagementPage from './components/MessageManagementPage/MessageManagementPage';
 import UserProfilePage from './components/UserProfilePage/UserProfilePage.jsx';
-
+import ProtectedRoute from './components/RouteGuard.jsx';
+import DynamicRoute from './components/RouteForHome';
 
 function App() {
 
@@ -24,15 +25,17 @@ function App() {
 
       <div className="main-content">
           <Routes>
-              <Route path="/home" element={<HomePage/>}/>
-              <Route path="/post/:postId" element={<PostDetailPage/>}/>
-              <Route path="/admin" element={<AdminHomePage/>}/>
-              <Route path="/user-management" element={<UserManagementPage/>}/>
               <Route path="/register" element={<RegisterPage/>}/>
               <Route path="/login" element={<LoginPage/>}/>
+
+              <Route path="/home" element={<ProtectedRoute> <DynamicRoute /> </ProtectedRoute>}/>
+              <Route path="/post/:postId" element={<ProtectedRoute> <PostDetailPage/>  </ProtectedRoute>}/>
+              {/*<Route path="/admin" element={<ProtectedRoute> <AdminHomePage/>  </ProtectedRoute>}/>*/}
+              <Route path="/user-management" element={<ProtectedRoute> <UserManagementPage/>  </ProtectedRoute>}/>
+
               <Route path="/email-verify" element={<EmailVerificationPage/>}/>
-              <Route path="/user-profile" element={<UserProfilePage/>}/>
-              <Route path="/admin/messages" element={<MessageManagementPage />} />
+              <Route path="/user-profile" element={<ProtectedRoute> <UserProfilePage/>  </ProtectedRoute>}/>
+              <Route path="/admin/messages" element={<ProtectedRoute> <MessageManagementPage />  </ProtectedRoute>} />
           </Routes>
       </div>
 
