@@ -5,13 +5,17 @@ import PropTypes from "prop-types";
 const MessageRow = ({ message, onToggleStatus }) => {
     const { dateCreated, email, message: msg, status } = message;
 
+    const handleToggleStatus = () => {
+        onToggleStatus();
+    };
+
     return (
         <tr>
             <td>{dateCreated}</td>
             <td>{email}</td>
             <td>{msg}</td>
             <td>
-                <StatusButton status={status} onToggle={() => onToggleStatus(message)} />
+                <StatusButton status={status} onToggle={handleToggleStatus} />
             </td>
         </tr>
     );

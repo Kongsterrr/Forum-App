@@ -16,6 +16,7 @@ import MessageManagementPage from './components/MessageManagementPage/MessageMan
 import UserProfilePage from './components/UserProfilePage/UserProfilePage.jsx';
 import ProtectedRoute from './components/RouteGuard.jsx';
 import DynamicRoute from './components/RouteForHome';
+import ContactAdminPage from "./components/ContactAdminPage/ContactAdminPage.jsx";
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
               <Route path="/email-verify" element={<EmailVerificationPage/>}/>
               <Route path="/user-profile" element={<ProtectedRoute> <UserProfilePage/>  </ProtectedRoute>}/>
               <Route path="/admin/messages" element={<ProtectedRoute requiredRoles={['Admin']}> <MessageManagementPage />  </ProtectedRoute>} />
+              <Route path="/contact-admin" element={<ContactAdminPage />} />
           </Routes>
       </div>
 
