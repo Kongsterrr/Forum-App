@@ -37,8 +37,8 @@ class UserProfileView(MethodView):
     def __init__(self):
         self.user_service = UserService()
 
-    @token_required
-    def get(self, user_id, user_status):
+    # @token_required
+    def get(self, user_id):
         user_profile = self.user_service.get_user_profile(user_id)
         if user_profile:
             return jsonify(user_profile.serialize()), 200
