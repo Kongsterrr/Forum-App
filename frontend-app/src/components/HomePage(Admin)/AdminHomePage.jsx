@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts, banPost, unbanPost, recoverPost } from '../../store/actions/AdminHomeActions';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
+import PostCard from "../PostCard/PostCard.jsx";
 
 
 export default function AdminHomePage() {
@@ -41,13 +42,28 @@ export default function AdminHomePage() {
             <h2>Published Posts</h2>
             <ul>
               {postsData.published_posts.map((post) => (
-                  <li key={post.postId}>
-                    <h3>{post.title}</h3>
-                    <p>By: {post.firstName} {post.lastName}</p>
-                    <p>Date: {post.date}</p>
-                    <button onClick={() => handleBan(post.postId)}>Ban</button>
-                  </li>
+                  <div key={post.postId}>
+                    <Link to={`/post/${post.postId}`}>
+                      <PostCard post={post}>
+                        <button onClick={(e) => {
+                          e.preventDefault();
+                          handleBan(post.postId);
+                        }}>Ban
+                        </button>
+                      </PostCard>
+                    </Link>
+                  </div>
               ))}
+
+              {/*{postsData.published_posts.map((post) => (*/}
+              {/*    <li key={post.postId}>*/}
+              {/*      <h3>{post.title}</h3>*/}
+              {/*      <p>By: {post.firstName} {post.lastName}</p>*/}
+              {/*      <p>Date: {post.date}</p>*/}
+              {/*      <button onClick={() => handleBan(post.postId)}>Ban</button>*/}
+              {/*    </li>*/}
+              {/*))}*/}
+
             </ul>
           </section>
 
@@ -55,12 +71,17 @@ export default function AdminHomePage() {
             <h2>Banned Posts</h2>
             <ul>
               {postsData.banned_posts.map((post) => (
-                  <li key={post.postId}>
-                    <h3>{post.title}</h3>
-                    <p>By: {post.firstName} {post.lastName}</p>
-                    <p>Date: {post.date}</p>
-                    <button onClick={() => handleUnban(post.postId)}>Unban</button>
-                  </li>
+                  <div key={post.postId}>
+                    <Link to={`/post/${post.postId}`}>
+                      <PostCard post={post}>
+                        <button onClick={(e) => {
+                          e.preventDefault();
+                          handleUnban(post.postId);
+                        }}>UnBan
+                        </button>
+                      </PostCard>
+                    </Link>
+                  </div>
               ))}
             </ul>
           </section>
@@ -69,12 +90,17 @@ export default function AdminHomePage() {
             <h2>Deleted Posts</h2>
             <ul>
               {postsData.deleted_posts.map((post) => (
-                  <li key={post.postId}>
-                    <h3>{post.title}</h3>
-                    <p>By: {post.firstName} {post.lastName}</p>
-                    <p>Date: {post.date}</p>
-                    <button onClick={() => handleRecover(post.postId)}>Recover</button>
-                  </li>
+                  <div key={post.postId}>
+                    <Link to={`/post/${post.postId}`}>
+                      <PostCard post={post}>
+                        <button onClick={(e) => {
+                          e.preventDefault();
+                          handleRecover(post.postId);
+                        }}>Recover
+                        </button>
+                      </PostCard>
+                    </Link>
+                  </div>
               ))}
             </ul>
           </section>

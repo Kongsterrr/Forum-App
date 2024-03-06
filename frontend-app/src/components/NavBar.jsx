@@ -2,8 +2,7 @@
 import React from 'react';
 import { NavLink} from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
-import {useSelector} from "react-redux";
-// import Container from 'react-bootstrap/Container'
+
 
 const NavBar = ({ userGroup }) => {
 
