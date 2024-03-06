@@ -133,6 +133,24 @@ class UserService:
         self.send_verification_code(user_id)
         return {"Message": "Email sent to the user for update."}
 
+    def update_user_profile(self, user_id, profile_data):
+
+        response = {}
+
+        if 'email' in profile_data:
+            response['email_update'] = self.update_user_email(user_id, profile_data['email'])
+        
+        elif 'profileImageURL' in profile_data:
+            response['profileImageURL_update'] =self.update_profile_pic(user_id, profile_data['profileImageURL'])
+        
+        elif 'firstName' in profile_data:
+            response['firstName_update'] = self.user_repository.update_user_firstname(user_id, profile_data['firstName'])
+
+        elif 'lastName' in profile_data:
+            response['lastName_update'] = self.user_repository.update_user_lastname(user_id, profile_data['lastName'])
+        
+        return response
+
     def get_all_user(self, user_status):
         if user_status != "Admin":
             return False, "Insufficient permissions to view all users."

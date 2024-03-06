@@ -75,25 +75,29 @@ class UserProfileUpdateView(MethodView):
     def post(self, user_id, user_status):
 
         data = request.get_json()
-
-        if 'update_type' not in data:
-                return jsonify({'error': 'Update type not provided'}), 400
-
-        update_type = data.get('update_type')
-
-        if update_type == 'picture':
-            if 'url' not in data:
-                return jsonify({'error': 'Profile picture url not provided'}), 400
-            url = data['url']
-            return jsonify(self.user_service.update_profile_pic(user_id, url))
-
-        if update_type == 'email':
-            if 'email' not in data:
-                return jsonify({'error': 'User email not provided'}), 400
-            email = data['email']
-            return jsonify(self.user_service.update_user_email(user_id, email))
+        print(data)
+        return True
+        # return jsonify(self.user_service.update_user_profile(user_id, data))
         
-        return jsonify({'error': 'Update type invalid.'}), 400
+
+        # if 'update_type' not in data:
+        #         return jsonify({'error': 'Update type not provided'}), 400
+
+        # update_type = data.get('update_type')
+
+        # if update_type == 'picture':
+        #     if 'url' not in data:
+        #         return jsonify({'error': 'Profile picture url not provided'}), 400
+        #     url = data['url']
+        #     return jsonify(self.user_service.update_profile_pic(user_id, url))
+
+        # if update_type == 'email':
+        #     if 'email' not in data:
+        #         return jsonify({'error': 'User email not provided'}), 400
+        #     email = data['email']
+        #     return jsonify(self.user_service.update_user_email(user_id, email))
+        
+        # return jsonify({'error': 'Update type invalid.'}), 400
 
 
 

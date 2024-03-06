@@ -81,6 +81,26 @@ class UserRepository:
         except Exception as e:
             db.rollback()
             return False, str(e)
+    
+    def update_user_firstname(self, userId, firstName):
+        user_model = db.query(User).get(userId)
+        user_model.firstName = firstName
+        try:
+            db.commit()
+            return True, "User firstname set successfully."
+        except Exception as e:
+            db.rollback()
+            return False, str(e)
+    
+    def update_user_lastname(self, userId, lastName):
+        user_model = db.query(User).get(userId)
+        user_model.lastName = lastName
+        try:
+            db.commit()
+            return True, "User lastname set successfully."
+        except Exception as e:
+            db.rollback()
+            return False, str(e)
 
     def upgrade_user_to_admin(self, userId):
         user = db.query(User).get(userId)
