@@ -10,6 +10,7 @@ function UserProfilePage() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [registrationDate, setRegistrationDate] = useState('');
+    const [email, setEmail] = useState('');
     const token = localStorage.getItem('token');
     const default_url = ''
 
@@ -53,10 +54,11 @@ function UserProfilePage() {
         else{
             setProfileImage(userData.profileImageURL)
         }
-
+        
         setFirstName(userData.firstName);
         setLastName(userData.lastName);
         setRegistrationDate(userData.dateJoined);
+        setEmail(userData.email)
         } catch (error) {
         console.error('Error fetching user data:', error);
         }
@@ -82,7 +84,14 @@ function UserProfilePage() {
         <div className="modal">
           <div className="modal-content">
             <span className="close" onClick={closeModal}>&times;</span>
-            <EditProfilePopup onSave={handleSave} onClose={closeModal}/>
+            <EditProfilePopup 
+              onSave={handleSave} 
+              onClose={closeModal}
+              currentFirstName={firstName}
+              currentLastName={lastName}
+              currentEmail={email}
+              currentProfileImage={profileImage}
+            />
           </div>
         </div>
       )}

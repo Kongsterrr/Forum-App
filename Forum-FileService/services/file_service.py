@@ -1,19 +1,17 @@
 import boto3
 from werkzeug.utils import secure_filename
 import json
+import config
 
 class FileService:
     def __init__(self):
 
-        with open('config.json') as f:
-            config = json.load(f)
-        
-        self.bucket_name = config["AWS_BUCKET_NAME"]
+        self.bucket_name = config.AWS_BUCKET_NAME
         self.s3_client = boto3.client(
             's3',
-            aws_access_key_id=config["AWS_ACCESS_KEY"],
-            aws_secret_access_key=config["AWS_SECRET_KEY"],
-            region_name=config["AWS_BUCKET_REGION"]
+            aws_access_key_id=config.AWS_ACCESS_KEY,
+            aws_secret_access_key=config.AWS_SECRET_KEY,
+            region_name=config.AWS_BUCKET_REGION
         )
 
     def upload_file(self, user_id, file_path):

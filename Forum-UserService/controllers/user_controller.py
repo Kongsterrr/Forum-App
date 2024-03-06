@@ -71,7 +71,8 @@ class UserProfileUpdateView(MethodView):
     def __init__(self):
         self.user_service = UserService()
 
-    def post(self, user_id):
+    @token_required
+    def post(self, user_id, user_status):
 
         data = request.get_json()
 

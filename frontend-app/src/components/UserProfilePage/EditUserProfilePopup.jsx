@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-function EditProfilePopup({ onClose, onSave }) {
+
+function EditProfilePopup({ onClose, onSave, currentFirstName, currentLastName, currentEmail, currentProfileImage }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [profileImage, setProfileImage] = useState('');
+
+  useEffect(() => {
+    setFirstName(currentFirstName);
+    setLastName(currentLastName);
+    setEmail(currentEmail);
+    setProfileImage(currentProfileImage);
+  }, [currentFirstName, currentLastName, currentEmail, currentProfileImage]);
   
   const handleSave = () => {
     onSave({ firstName, lastName, email, profileImage });
