@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-import { setUserStatus } from '../../store/actions/LoginActions';
+import { setUserId, setUserStatus } from '../../store/actions/LoginActions';
 import { jwtDecode } from "jwt-decode";
 import LoginForm from './LoginForm';
 
@@ -21,11 +21,11 @@ function LoginPage() {
     console.log('User logged in successfully');
     const decodedToken = jwtDecode(token);
     const user_status = decodedToken.user_status; 
-    console.log('decodedToken: ', decodedToken)
+    const user_id = decodedToken.user_id; 
 
     // console.log("Before dispatch: ", userStatus)
-    dispatch({ type: 'SET_USER_STATUS', payload: user_status });
-    console.log("After dispatch: ", userStatus)
+    dispatch(setUserStatus(user_status));
+    dispatch(setUserId(user_id));
     console.log('Actual value: ', user_status)
 
     // Redirect the user based on user_status

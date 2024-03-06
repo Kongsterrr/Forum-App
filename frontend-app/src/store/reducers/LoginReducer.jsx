@@ -2,6 +2,7 @@ import {LOGOUT} from "../actions/LogOutActions.jsx";
 
 const initialState = {
     userStatus: null,
+    userId: null
   };
   
   const loginReducer = (state = initialState, action) => {
@@ -10,6 +11,11 @@ const initialState = {
         return {
           ...state,
           userStatus: action.payload,
+        };
+      case 'SET_USER_ID':
+        return {
+          ...state,
+          userId: action.payload,
         };
       case LOGOUT:
         return {
@@ -21,3 +27,4 @@ const initialState = {
   };
   
   export default loginReducer;
+  

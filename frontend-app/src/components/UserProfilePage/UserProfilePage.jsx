@@ -13,6 +13,7 @@ function UserProfilePage() {
     const [email, setEmail] = useState('');
     const token = localStorage.getItem('token');
     const userStatus = useSelector(state => state.userLogin.userStatus);
+    const userId = useSelector(state => state.userLogin.userId);
     const default_url = '';
     
 
@@ -33,11 +34,10 @@ function UserProfilePage() {
     const fetchUserData = async () => {
         console.log('user profile token:', token)
         try {
-            const response = await fetch('http://127.0.0.1:5000/users/profile', {
+            const response = await fetch('http://127.0.0.1:5000/users/' + userId, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
                 },
                 });
         if (!response.ok) {
