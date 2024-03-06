@@ -32,7 +32,28 @@ function AddPostPage({ open, onClose, fetchPosts }) {
     } catch (error) {
         console.error("Error creating post:", error);
     }
-};
+  };
+
+  const handleSaveDraft = async (e) => {
+    e.preventDefault();
+    setPostData({ ...postData, status: "Unpublished" });
+    postData.status = "Unpublished";
+    try {
+      const response = await fetch("http://127.0.0.1:5000/post_and_reply/", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              // "Authorization": `Bearer ${localStorage.getItem("token")}`
+              "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMjYsInVzZXJfc3RhdHVzIjoiTm9ybWFsIiwiZXhwIjoxNzEwMjE3MzM4fQ.xBuCnpCKDrg0eVa4CdoRcoreBqw0aoNebR6tS0yNdjc`
+          },
+          body: JSON.stringify(postData)
+      });
+      onClose();
+      fetchPosts();
+  } catch (error) {
+      console.error("Error creating post:", error);
+  }
+  };
 
   return (
     <div className='overlay'>
@@ -55,6 +76,8 @@ function AddPostPage({ open, onClose, fetchPosts }) {
                 </div>
                 <br></br>
                 <button type="submit">Submit</button>
+                <button type="button" onClick={handleSaveDraft}>Save Draft</button>
+
             </form>
           </div>
         </div>
