@@ -32,6 +32,7 @@ export const fetchPosts = () => async (dispatch) => {
 };
 
 const updatePostStatus = async (dispatch, postId, actionType, newStatus) => {
+  const token = localStorage.getItem('token');
   try {
     const endpoint = `http://127.0.0.1:5000/post_and_reply/${postId}/${actionType}`;
     await fetch(endpoint, {

@@ -31,6 +31,7 @@ export const fetchUsers = () => async (dispatch) => {
   };
 
 const updateUserStatus = async (dispatch, userId, actionType, newStatus) => {
+  const token = localStorage.getItem('token');
   try {
     const endpoint = `http://127.0.0.1:5000/users/${actionType}/${userId}`;
     await fetch(endpoint, {
