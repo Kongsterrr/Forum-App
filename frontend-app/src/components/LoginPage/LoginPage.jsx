@@ -20,7 +20,8 @@ function LoginPage() {
     localStorage.setItem('token', token);
     console.log('User logged in successfully');
     const decodedToken = jwtDecode(token);
-    const user_status = decodedToken.user_status; 
+    const user_status = decodedToken.user_status;
+    localStorage.setItem('user_status', user_status);
     const user_id = decodedToken.user_id; 
 
     // console.log("Before dispatch: ", userStatus)
