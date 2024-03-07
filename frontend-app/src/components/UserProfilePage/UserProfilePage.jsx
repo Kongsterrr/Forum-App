@@ -5,6 +5,7 @@ import { setUserId, setUserStatus, setUserFirstname, setUserLastname, setUserEma
 import { useDispatch } from 'react-redux';
 import './UserProfile.css'
 import { useSelector } from 'react-redux';
+import {jwtDecode} from "jwt-decode";
 
 function UserProfilePage() {
     const dispatch = useDispatch();
@@ -16,9 +17,10 @@ function UserProfilePage() {
     const profileImage = useSelector(state => state.userLogin.profileImageURL);
 
     const token = localStorage.getItem('token');
-    const userStatus = useSelector(state => state.userLogin.userStatus);
+    const userStatus = localStorage.getItem('user_status');
     const userId = useSelector(state => state.userLogin.userId);
     const default_url = 'https://forum-app-bucket.s3.amazonaws.com/125-6cc93f1a-e574-4be3-b34d-4dcd0f45aad9.png?AWSAccessKeyId=AKIARKHNNC2NKDD7YEUY&Signature=be6PVSTKbCHfr5ilZNkvMbYzgWg%3D&Expires=1741322810';
+
     
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -85,6 +87,8 @@ function UserProfilePage() {
     
     const fetchUserData = async () => {
         console.log('user profile token:', token)
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.user_id;
         try {
             const response = await fetch('http://127.0.0.1:5000/users/' + userId, {
                 method: 'GET',
@@ -144,6 +148,8 @@ function UserProfilePage() {
               {userStatus === 'Normal' ? 'Verify Now' : 'Verified'}
             </button>
           )}
+
+          {(userStatus === 'Admin') && ' Admin'}
       </p>
       </div>
       <button onClick={openModal}>Edit Profile</button>

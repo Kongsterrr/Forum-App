@@ -18,7 +18,7 @@ const ContactAdminPage = ({ submitMessage, responseMessage }) => {
         // Dispatch action to send message
         await submitMessage(formData);
         alert('Message saved successfully.');
-        navigate('/user-profile');
+        navigate('/home');
     };
 
     return (

@@ -56,6 +56,7 @@ class PostDetailService:
             'postId': post_data['postId'],
             'title': post_data['title'],
             'content': post_data['content'],
+            'images': post_data['images'],
             'user': {
                 'firstName': user_data['firstName'],
                 'lastName': user_data['lastName'],
@@ -65,6 +66,7 @@ class PostDetailService:
             'dateModified': post_data.get('dateModified'),
             'replies': replies_list
         }
+        print(aggregated_data)
 
         return aggregated_data
 

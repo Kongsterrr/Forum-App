@@ -25,5 +25,6 @@ class Post(Base):
             'content': self.content,
             'status': self.status,
             'isArchived': self.isArchived,
-            'dateCreated': self.dateCreated
+            'dateCreated': self.dateCreated,
+            'images': self.images,
         }

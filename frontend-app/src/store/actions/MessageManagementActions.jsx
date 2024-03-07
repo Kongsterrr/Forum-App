@@ -1,7 +1,7 @@
 export const FETCH_MESSAGES = 'FETCH_MESSAGES';
 export const TOGGLE_MESSAGE_STATUS = 'TOGGLE_MESSAGE_STATUS';
 
-// const hardcoded_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX3N0YXR1cyI6IkFkbWluIiwiZXhwIjoxNzA5NzY2MzMzfQ.LD9UqNp9zojPFBHtTIIGRXK96bNUYYh_BFG0lpb7SAs"
+// const hardcoded_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo5LCJ1c2VyX3N0YXR1cyI6IkFkbWluIiwiZXhwIjoxNzEwMzc0MzA0fQ.dSKx1hYp8p5FPvIk_jntUyW6pu2OCKsoEOjrVuUjc-k"
 
 
 export const fetchMessages = () => dispatch => {
