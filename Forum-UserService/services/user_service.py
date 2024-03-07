@@ -111,11 +111,12 @@ class UserService:
             return False, "Only SuperAdmin can upgrade Normal User to Admin User"
         return self.user_repository.upgrade_user_to_admin(userId)
     
-    def update_profile_pic(self, user_id, pic_path):
+    def update_profile_pic(self, user_id, pic_path, file_object):
         auth_service_url = "http://127.0.0.1:5000/file/upload"
         payload = {
             'user_id': user_id,
-            'file_path': pic_path
+            'file_path': pic_path,
+            'file_object': file_object
         }
         response = requests.post(auth_service_url, json=payload)
     
@@ -141,8 +142,8 @@ class UserService:
         if 'email' in profile_data:
             response['email_update'] = self.update_user_email(user_id, profile_data['email'])
         
-        elif 'profileImageURL' in profile_data:
-            response['profileImageURL_update'] =self.update_profile_pic(user_id, profile_data['profileImageURL'])
+        elif 'profileImage' in profile_data:
+            response['profileImageURL_update'] = self.update_profile_pic(user_id, profile_data['profileImage']['file_path'], profile_data['profileImage']['file_object'])
         
         elif 'firstName' in profile_data:
             response['firstName_update'] = self.user_repository.update_user_firstname(user_id, profile_data['firstName'])
@@ -150,6 +151,7 @@ class UserService:
         elif 'lastName' in profile_data:
             response['lastName_update'] = self.user_repository.update_user_lastname(user_id, profile_data['lastName'])
         
+        print(response)
         return response
 
     def get_all_user(self, user_status):

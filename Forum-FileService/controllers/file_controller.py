@@ -17,10 +17,14 @@ class FileView(MethodView):
         
         if 'file_path' not in data:
             return jsonify({'error': 'File path not provided'}), 400
+        
+        if 'file_object' not in data:
+            return jsonify({'error': 'File content not provided'}), 400
 
         file_path = data['file_path']
         user_id = data['user_id']
-        return jsonify(self.file_service.upload_file(user_id, file_path))
+        file_object = data['file_object']
+        return jsonify(self.file_service.upload_file(user_id, file_path, file_object))
     
     def get(self, filename):
         return jsonify(self.file_service.get_file(filename))

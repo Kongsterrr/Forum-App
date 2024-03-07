@@ -50,9 +50,10 @@ function UserProfilePage() {
           dispatch(setUserStatus('Normal'));
           dispatch(setUserEmail(updatedUserData.email));
         }
-        if (updatedUserData.profileImage != profileImage){
-          changedUserData['profileImageURL'] = updatedUserData.profileImage
-          dispatch(setUserPic(updatedUserData.profileImage));
+        if (updatedUserData.profileImage['file_path'] != profileImage){
+          console.log('In profile page: ', updatedUserData.profileImage)
+          changedUserData['profileImage'] = updatedUserData.profileImage
+          dispatch(setUserPic(updatedUserData.profileImage['file_path']));
         }
         
         console.log('Changed user data:', changedUserData);
