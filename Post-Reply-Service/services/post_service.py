@@ -23,8 +23,9 @@ class PostService:
         return post
     
     def upload_files_to_S3(self, file_paths, user_id):
-
-        query_url = self.file_service_url + 'upload-files'
+        print("fp: ")
+        print(file_paths)
+        query_url = self.file_service_url + 'upload'
 
         payload ={
             'user_id': user_id,
@@ -41,16 +42,35 @@ class PostService:
         else:
             raise NotFoundException('Post Created Failed: files upload failure')
 
+    def upload_file_to_S3(self, user_id, file_path, file_object):
+
+        query_url = self.file_service_url + 'upload'
+
+        payload = {
+            'user_id': user_id,
+            'file_path': file_path,
+            'file_object': file_object
+        }
+
+        response = requests.post(query_url, json=payload)
+
+        if response.status_code == 200:
+            data = response.json()
+            url = data.get('url')
+            print("post get url: ", url)
+            return {'url': url}
+        else:
+            raise NotFoundException('Post Created Failed: files upload failure')
     def create_post_published(self, post_data, user_id):
         try:
             # post_data['status'] = 'Published'
             post_data['userId'] = user_id
 
-
             # Upload images or attachments to S3 bucket
             if 'images' in post_data:
                 images = post_data['images']
-                url_json = self.upload_files_to_S3(images, user_id)
+                url_json = self.upload_file_to_S3(user_id, images[0]['file_path'], images[0]['file_object'])
+                print("uuu ", url_json)
                 if url_json:
                     post_data['images'] = url_json
                 else:
