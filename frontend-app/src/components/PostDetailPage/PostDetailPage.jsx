@@ -12,7 +12,7 @@ export default function PostDetailPage({  }) {
     content: "",
     dateCreated: "",
     dateModified: "",
-    images: [],
+    images: {url: ""},
     replies: [],
     user: {
         firstName: "",
@@ -73,17 +73,18 @@ export default function PostDetailPage({  }) {
             <p>{postItem.content}</p>
             <div>
                 
-                    {postItem.images && postItem.images.urls && postItem.images.urls.length > 0 ? (
+                    {postItem.images != null && postItem.images.url.length > 0? (
                         <div>
                             <p>Images:</p>
-                            <ul>
+                            <img src={postItem.images.url} alt="Post Image" />
+                            {/* <ul>
                             {postItem.images.urls.map((url, index) => (
                                 <li key={index}>
-                                <img src={url} alt={`Image ${index}`} />
+                                <img src={postItem.images.url} alt={`Image ${index}`} />
                                 <div>{url}</div>
                                 </li>
                             ))}
-                            </ul>
+                            </ul> */}
                         </div>
                         
                     )
