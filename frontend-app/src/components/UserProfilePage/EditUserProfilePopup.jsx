@@ -27,7 +27,13 @@ function EditProfilePopup({ onClose, onSave, currentFirstName, currentLastName, 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     const imageUrl = URL.createObjectURL(file);
-    setProfileImage(imageUrl); // Update profileImage state with file path
+    const reader = new FileReader();
+    reader.onload = () => {
+        let fileData = reader.result;
+        fileData = fileData.split(',')[1];
+        setProfileImage({ file_path: imageUrl, file_object: fileData });
+    };
+    reader.readAsDataURL(file);
   };
 
   return (

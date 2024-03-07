@@ -1,7 +1,12 @@
+import os
+import uuid
 import boto3
 from werkzeug.utils import secure_filename
 import json
 import config
+import base64
+from PIL import Image
+from io import BytesIO
 
 class FileService:
     def __init__(self):
@@ -14,11 +19,28 @@ class FileService:
             region_name=config.AWS_BUCKET_REGION
         )
 
-    def upload_file(self, user_id, file_path):
+    def decode_file(self, user_id, file_path, data_string):
+
+        image_data = base64.b64decode(data_string)
+        image = Image.open(BytesIO(image_data))
+
+        # Generate a unique filename
+        filename = str(user_id) + "-" + secure_filename(file_path.split("/")[-1]) + '.png'
+
+        temp_filepath = os.path.join('/tmp', filename)
+        image.save(temp_filepath)
+        return filename, temp_filepath
+
+    def upload_file(self, user_id, file_path, file_object):
         print("Uploading file: ", user_id, file_path)
         try:
-            filename = str(user_id) + "-" + secure_filename(file_path.split("/")[-1]) 
-            self.s3_client.upload_file(file_path, self.bucket_name, filename)
+            # Save file to tmp, generate file name and path
+            filename, filepath = self.decode_file(user_id, file_path, file_object)
+   
+            # Upload the file to S3
+            self.s3_client.upload_file(filepath, self.bucket_name, filename)
+
+            # self.s3_client.upload_fileobj(file_object, self.bucket_name, filename)
             url = self.get_file(filename)
             return {'message': 'File uploaded successfully', 'url': url}
         except Exception as e:
