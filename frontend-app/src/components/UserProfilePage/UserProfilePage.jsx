@@ -17,8 +17,9 @@ function UserProfilePage() {
     const profileImage = useSelector(state => state.userLogin.profileImageURL);
 
     const token = localStorage.getItem('token');
-    const userStatus = useSelector(state => state.userLogin.userStatus);
-    const userId = useSelector(state => state.userLogin.userId);
+    // const userStatus = useSelector(state => state.userLogin.userStatus);
+    // const userId = useSelector(state => state.userLogin.userId);
+    const userStatus = localStorage.getItem('user_status');
     const default_url = '';
     
 
@@ -147,6 +148,8 @@ function UserProfilePage() {
               {userStatus === 'Normal' ? 'Verify Now' : 'Verified'}
             </button>
           )}
+
+          {(userStatus === 'Admin') && ' Admin'}
       </p>
       </div>
       <button onClick={openModal}>Edit Profile</button>
