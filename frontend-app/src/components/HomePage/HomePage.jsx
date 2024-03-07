@@ -7,6 +7,8 @@ import "./AddPostPage.css";
 export default function HomePage() {
     const [allPosts, setAllPosts] = useState([]);
     const [showAddPost, setShowAddPost] = useState(false);
+    const [sortAscending, setSortAscending] = useState(true);
+
 
     useEffect(() => {
         console.log(localStorage.getItem("token"));
@@ -29,12 +31,24 @@ export default function HomePage() {
 
     };
 
+    const handleSort = () => {
+        const sortedPosts = [...allPosts].sort((a, b) => {
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+            return sortAscending ? dateA - dateB : dateB - dateA;
+        });
+        setAllPosts(sortedPosts);
+        setSortAscending(!sortAscending);
+    };
+
     return (
         <div>
             <h1>Home Page</h1>
             <p>Welcome to the home page of the Forum App.</p>
 
             <button onClick={toggleAddPost}>Create a Post</button>
+            <button onClick={handleSort}>{sortAscending ? "Sort Ascending" : "Sort Descending"}</button>
+
 
             <AddPostPage open={showAddPost} onClose={toggleAddPost} fetchPosts={fetchPosts} />
 
