@@ -1,4 +1,5 @@
 venv/
+projectVenv/
 requirements.txt
 .DS_Store
 */.DS_Store
