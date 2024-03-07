@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 function EmailVerificationForm() {
   const [verificationCode, setVerificationCode] = useState('');
@@ -6,6 +7,7 @@ function EmailVerificationForm() {
   const [resendDisabled, setResendDisabled] = useState(false);
   const [countdown, setCountdown] = useState(60); 
   const token = localStorage.getItem('token');
+  const navigate = useNavigate();
   let timer;
 
   useEffect(() => {
@@ -56,7 +58,7 @@ function EmailVerificationForm() {
       const data = await response.json();
       console.log(data)
       if (data == true) {
-        window.location.href = '/';
+        navigate('/home');
       }
 
     } catch (error) {

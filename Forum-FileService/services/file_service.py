@@ -47,12 +47,18 @@ class FileService:
             print(e)
             return {'error': str(e)}
     
-    def upload_files(self, user_id, file_paths):
+    '''
+    files: list: [file_info]
+    file_info: tuple: (file_path, file_object)
+    '''
+    def upload_files(self, user_id, files):
         try:
             urls = []
-            for file_path in file_paths:
-                filename = str(user_id) + "-post-" + secure_filename(file_path.split("/")[-1]) 
-                self.s3_client.upload_file(file_path, self.bucket_name, filename)
+            for file_info in files:
+                file_path = file_info[0]
+                file_object = file_info[1]
+                filename, filepath = self.decode_file(user_id, file_path, file_object)
+                self.s3_client.upload_file(filepath, self.bucket_name, filename)
                 url = self.get_file(filename)
                 urls.append(url)
             return {'message': 'Files uploaded successfully', 'urls': urls}
@@ -71,6 +77,7 @@ class FileService:
             url = self.s3_client.generate_presigned_url('get_object', 
                                                         Params={'Bucket': self.bucket_name, 'Key': file_name},
                                                         HttpMethod='GET',
+                                                        ExpiresIn=31536000,
                                                         )
             return url
         except Exception as e:
