@@ -18,7 +18,7 @@ function UserProfilePage() {
     const token = localStorage.getItem('token');
     const userStatus = useSelector(state => state.userLogin.userStatus);
     const userId = useSelector(state => state.userLogin.userId);
-    const default_url = '';
+    const default_url = 'https://forum-app-bucket.s3.amazonaws.com/125-6cc93f1a-e574-4be3-b34d-4dcd0f45aad9.png?AWSAccessKeyId=AKIARKHNNC2NKDD7YEUY&Signature=be6PVSTKbCHfr5ilZNkvMbYzgWg%3D&Expires=1741322810';
     
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,8 +50,7 @@ function UserProfilePage() {
           dispatch(setUserStatus('Normal'));
           dispatch(setUserEmail(updatedUserData.email));
         }
-        if (updatedUserData.profileImage['file_path'] != profileImage){
-          console.log('In profile page: ', updatedUserData.profileImage)
+        if (updatedUserData.profileImage != profileImage){
           changedUserData['profileImage'] = updatedUserData.profileImage
           dispatch(setUserPic(updatedUserData.profileImage['file_path']));
         }
