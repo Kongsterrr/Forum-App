@@ -5,6 +5,7 @@ import { setUserId, setUserStatus, setUserFirstname, setUserLastname, setUserEma
 import { useDispatch } from 'react-redux';
 import './UserProfile.css'
 import { useSelector } from 'react-redux';
+import {jwtDecode} from "jwt-decode";
 
 function UserProfilePage() {
     const dispatch = useDispatch();
@@ -16,8 +17,9 @@ function UserProfilePage() {
     const profileImage = useSelector(state => state.userLogin.profileImageURL);
 
     const token = localStorage.getItem('token');
-    const userStatus = useSelector(state => state.userLogin.userStatus);
-    const userId = useSelector(state => state.userLogin.userId);
+    // const userStatus = useSelector(state => state.userLogin.userStatus);
+    // const userId = useSelector(state => state.userLogin.userId);
+    const userStatus = localStorage.getItem('user_status');
     const default_url = '';
     
 
@@ -86,6 +88,8 @@ function UserProfilePage() {
     
     const fetchUserData = async () => {
         console.log('user profile token:', token)
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.user_id;
         try {
             const response = await fetch('http://127.0.0.1:5000/users/' + userId, {
                 method: 'GET',
@@ -145,6 +149,8 @@ function UserProfilePage() {
               {userStatus === 'Normal' ? 'Verify Now' : 'Verified'}
             </button>
           )}
+
+          {(userStatus === 'Admin') && ' Admin'}
       </p>
       </div>
       <button onClick={openModal}>Edit Profile</button>
