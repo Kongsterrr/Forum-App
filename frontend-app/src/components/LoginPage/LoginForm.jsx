@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import './LoginForm.css'
 
 function LoginForm({ onLogin }) {
+  const [errorMessage, setErrorMessage] = useState('');
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -31,6 +33,7 @@ function LoginForm({ onLogin }) {
       onLogin(data.token);
     } catch (error) {
       console.error('Failed to log in:', error);
+      setErrorMessage('Login failed. Please check your credentials and try again.');
     }
   };
 
@@ -59,7 +62,9 @@ function LoginForm({ onLogin }) {
         />
       </div>
       <button type="submit">Login</button>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
     </form>
+    
   );
 }
 
