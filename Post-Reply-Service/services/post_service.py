@@ -41,6 +41,26 @@ class PostService:
             return {'urls': urls}
         else:
             raise NotFoundException('Post Created Failed: files upload failure')
+    
+    def upload_file_to_S3(self, user_id, file_path, file_object):
+
+        query_url = self.file_service_url + 'upload-file'
+
+        payload ={
+            'user_id': user_id,
+            'file_path': file_path,
+            'file_object': file_object
+        }
+
+        response = requests.post(query_url, json=payload)
+
+        if response.status_code == 200:
+            data = response.json()
+            url = data.get('url')
+            print("post get url: ", url)
+            # return {'url': url}
+        else:
+            raise NotFoundException('Post Created Failed: files upload failure')
 
     def upload_file_to_S3(self, user_id, file_path, file_object):
 
