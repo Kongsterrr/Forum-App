@@ -72,7 +72,6 @@ export default function PostDetailPage({  }) {
             <p>Posted By: {postItem.user.firstName} {postItem.user.lastName} on {postItem.dateCreated}</p>
             <p>{postItem.content}</p>
             <div>
-                
                     {postItem.images != null && postItem.images.url.length > 0? (
                         <div>
                             <p>Images:</p>
@@ -89,7 +88,7 @@ export default function PostDetailPage({  }) {
                         
                     )
                     : (
-                        <p>No images</p>
+                        <p></p>
                     )}
             </div>
             
