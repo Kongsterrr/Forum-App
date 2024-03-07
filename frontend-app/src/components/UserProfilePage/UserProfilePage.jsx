@@ -5,6 +5,7 @@ import { setUserId, setUserStatus, setUserFirstname, setUserLastname, setUserEma
 import { useDispatch } from 'react-redux';
 import './UserProfile.css'
 import { useSelector } from 'react-redux';
+import {jwtDecode} from "jwt-decode";
 
 function UserProfilePage() {
     const dispatch = useDispatch();
@@ -85,6 +86,8 @@ function UserProfilePage() {
     
     const fetchUserData = async () => {
         console.log('user profile token:', token)
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.user_id;
         try {
             const response = await fetch('http://127.0.0.1:5000/users/' + userId, {
                 method: 'GET',

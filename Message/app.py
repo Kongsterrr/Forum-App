@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from models.message import db
 from aop.error_handler import initialize_error_handlers
+from routes.message_blueprint import message_blueprint
 
 
 app = Flask(__name__)
@@ -17,9 +18,9 @@ with app.app_context():
     # Create database tables
     db.create_all()
 
-if __name__ == '__main__':
-    # to resolve circular import issue
-    from routes.message_blueprint import message_blueprint
-    app.register_blueprint(message_blueprint)
 
-    app.run(debug=True, port=6008)
+app.register_blueprint(message_blueprint)
+
+
+if __name__ == '__main__':
+    app.run()
