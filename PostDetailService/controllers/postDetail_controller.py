@@ -36,3 +36,14 @@ class AdminHomeView(MethodView):
         if not success:
             return jsonify({'error': user_home}), 403
         return jsonify(user_home), 200
+
+class TopPostView(MethodView):
+
+    def __init__(self):
+        self.top_post_service = PostDetailService()
+
+    @token_required
+    def get(self, user_id, user_status):
+        print('im here')
+        user_home = self.top_post_service.get_top_post_data()
+        return jsonify(user_home), 200

@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { setUserStatus } from '../../store/actions/LoginActions';
+import { useDispatch } from 'react-redux';
 
 function EmailVerificationForm() {
+  const dispatch = useDispatch();
   const [verificationCode, setVerificationCode] = useState('');
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [resendDisabled, setResendDisabled] = useState(false);
@@ -58,6 +61,7 @@ function EmailVerificationForm() {
       const data = await response.json();
       console.log(data)
       if (data == true) {
+        dispatch(setUserStatus('Normal-write'))
         navigate('/home');
       }
 

@@ -12,6 +12,7 @@ function UserProfilePage() {
     const navigate = useNavigate();
     const [allHistoryPosts, setAllHistoryPosts] = useState([]);
     const [allDraftPosts, setAllDraftPosts] = useState([]);
+    const [allTopPosts, setAllTopPosts] = useState([]);
     const firstName = useSelector(state => state.userLogin.firstName);
     const lastName = useSelector(state => state.userLogin.lastName);
     const registrationDate = useSelector(state => state.userLogin.registrationDate);
@@ -122,7 +123,7 @@ function UserProfilePage() {
           const response = await fetch('http://127.0.0.1:5000/post_history/', {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
+                // 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
             });
@@ -143,7 +144,7 @@ function UserProfilePage() {
           const response = await fetch('http://127.0.0.1:5000/post_and_reply/drafts', {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
+                // 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
             });
@@ -152,6 +153,47 @@ function UserProfilePage() {
           }
           const data = await response.json();
           setAllDraftPosts(data);
+
+
+      } catch (error) {
+          console.error("Error fetching posts:", error);
+      }
+    };
+
+    const fetchTop3Posts = async () => {
+      try {
+          const response = await fetch('http://127.0.0.1:5000/post_and_reply/top', {
+            method: 'GET',
+            headers: {
+                // 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            });
+          if (!response.ok) {
+              throw new Error('Failed to fetch user data');
+          }
+          const data = await response.json();
+          setAllTopPosts(data);
+      } catch (error) {
+          console.error("Error fetching posts:", error);
+      }
+    };
+
+    const fetchTopPosts = async () => {
+      try {
+          const response = await fetch('http://127.0.0.1:5000/post-details/top', {
+            method: 'GET',
+            headers: {
+                // 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            });
+          if (!response.ok) {
+              throw new Error('Failed to fetch top post data');
+          }
+          const data = await response.json();
+          console.log(data)
+          setAllTopPosts(data);
       } catch (error) {
           console.error("Error fetching posts:", error);
       }
@@ -159,9 +201,16 @@ function UserProfilePage() {
 
     useEffect(() => {
         fetchUserData();
+        // fetchTop3Posts();
         fetchHistory();
         fetchDrafts();
+
     }, []);
+
+    // useEffect(() => {
+    //     fetchDrafts();
+    //
+    // }, []);
 
     const handleVerifyNow = () => {
       if (userStatus === 'Normal') {
@@ -172,65 +221,89 @@ function UserProfilePage() {
 
   return (
     <div>
-    <div className="posts-container">
-      <section className="profile-section">
-        <div>
-          <img src={profileImage} alt="Profile" />
-        </div>
-        <div>
-          <p>First Name: {firstName}</p>
-          <p>Last Name: {lastName}</p>
-          <p>Email: {email}</p>
-          <p>Registration Date: {registrationDate}</p>
-          <p>
-            User Status: 
-            {(userStatus === 'Normal' || userStatus === 'Normal-write') && (
-              <button onClick={handleVerifyNow} disabled={userStatus === 'Normal-write'}>
-                {userStatus === 'Normal' ? 'Verify Now' : 'Verified'}
-              </button>
-            )}
-          </p>
-        </div>
-        <button onClick={openModal}>Edit Profile</button>
-        {isModalOpen && (
-          <div className="modal">
-            <div className="modal-content">
-              <span className="close" onClick={closeModal}>&times;</span>
-              <EditProfilePopup 
-                onSave={handleSave} 
-                onClose={closeModal}
-                currentFirstName={firstName}
-                currentLastName={lastName}
-                currentEmail={email}
-                currentProfileImage={profileImage}
-              />
-            </div>
-          </div>
-        )}
-      </section>
+        <div className="posts-container">
+            <section className="profile-section">
+                <div>
+                    <img src={profileImage} alt="Profile"/>
+                </div>
+                <div>
+                    <p>First Name: {firstName}</p>
+                    <p>Last Name: {lastName}</p>
+                    <p>Email: {email}</p>
+                    <p>Registration Date: {registrationDate}</p>
+                    <p>
+                        User Status:
+                        {(userStatus === 'Normal' || userStatus === 'Normal-write') && (
+                            <button onClick={handleVerifyNow} disabled={userStatus === 'Normal-write'}>
+                                {userStatus === 'Normal' ? 'Verify Now' : 'Verified'}
+                            </button>
+                        )}
+                    </p>
+                </div>
+                <button onClick={openModal}>Edit Profile</button>
+                {isModalOpen && (
+                    <div className="modal">
+                        <div className="modal-content">
+                            <span className="close" onClick={closeModal}>&times;</span>
+                            <EditProfilePopup
+                                onSave={handleSave}
+                                onClose={closeModal}
+                                currentFirstName={firstName}
+                                currentLastName={lastName}
+                                currentEmail={email}
+                                currentProfileImage={profileImage}
+                            />
+                        </div>
+                    </div>
+                )}
+            </section>
 
-      <section className="history-section">
-        <h2>Browsing History</h2>
+            {/* <section>
+        <h2>Top3 Posts</h2>
         <ul>
-          {allHistoryPosts.map((post, index) => (
+          {allTopPosts.map((post, index) => (
             <Link to={`/post/${post.postId}`} key={index}>
               <PostCard post={post} />
             </Link>
           ))}
         </ul>
-      </section>
+      </section> */}
 
-      <section className="history-section">
-        <h2>Drafts</h2>
-        <ul>
-          {allDraftPosts.map((post, index) => (
-            <Link to={`/post/${post.postId}`} key={index}>
-              <PostCard post={post} />
-            </Link>
-          ))}
-        </ul>
-      </section>
-    </div>
+            <section className="history-section">
+                <h2>Browsing History</h2>
+                <ul>
+                    {allHistoryPosts.map((post, index) => (
+                        <Link to={`/post/${post.postId}`} key={index}>
+                            <PostCard post={post}/>
+                        </Link>
+                    ))}
+                </ul>
+            </section>
+
+            <section className="history-section">
+                <h2>Drafts</h2>
+                <ul>
+                    {allDraftPosts.map((post, index) => (
+                        <Link to={`/post/${post.postId}`} key={index}>
+                            <PostCard post={post}/>
+                        </Link>
+                    ))}
+                </ul>
+            </section>
+
+            <section className="history-section">
+                <h2>Top 3 Posts</h2>
+                <ul>
+                    {allTopPosts.map((post, index) => (
+                        <Link to={`/post/${post.postId}`} key={index}>
+                            <PostCard post={post}/>
+                        </Link>
+                    ))}
+                </ul>
+            </section>
+
+
+        </div>
     </div>
   );
 }
