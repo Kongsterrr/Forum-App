@@ -237,5 +237,33 @@ class PostDetailService:
             'date': post['dateModified'] if post.get('dateModified') else post['dateCreated'],
             'title': post['title'],
         }
+    
+    def get_top_post_data(self):
+        token = request.headers.get('Authorization')
+        headers = {'Authorization': f'{token}'}
+        try:
+            post_response = requests.get(f'{self.post_and_reply_service_url}/top', headers=headers)
+            if post_response.status_code == 200:
+                posts_data = post_response.json()
+            else:
+                return {'error': f'Failed to fetch posts, status code: {post_response.status_code}'}
+        except ValueError:
+            return {'error': 'Invalid JSON response from posts service'}
+        
+        aggregated_data_list = []
 
+        for post in posts_data:
+
+            post_id = post['postId']
+            post_detail_data = self.get_post_detail(post_id)
+            aggregated_data = {
+                'postId': post_id,
+                'firstName': post_detail_data['user']['firstName'],
+                'lastName': post_detail_data['user']['lastName'],
+                'date': post_detail_data['dateModified'] if post_detail_data.get('dateModified') else post_detail_data['dateCreated'],
+                'title': post_detail_data['title'],
+            }
+            aggregated_data_list.append(aggregated_data)
+
+        return aggregated_data_list
 
