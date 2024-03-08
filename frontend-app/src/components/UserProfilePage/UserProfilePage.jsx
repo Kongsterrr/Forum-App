@@ -172,6 +172,7 @@ function UserProfilePage() {
 
   return (
     <div>
+    <div className="posts-container">
       <section className="profile-section">
         <div>
           <img src={profileImage} alt="Profile" />
@@ -219,7 +220,7 @@ function UserProfilePage() {
         </ul>
       </section>
 
-      <section>
+      <section className="history-section">
         <h2>Drafts</h2>
         <ul>
           {allDraftPosts.map((post, index) => (
@@ -229,6 +230,7 @@ function UserProfilePage() {
           ))}
         </ul>
       </section>
+    </div>
     </div>
   );
 }
