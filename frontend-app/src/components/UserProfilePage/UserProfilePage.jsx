@@ -12,6 +12,7 @@ function UserProfilePage() {
     const navigate = useNavigate();
     const [allHistoryPosts, setAllHistoryPosts] = useState([]);
     const [allDraftPosts, setAllDraftPosts] = useState([]);
+    const [allTopPosts, setAllTopPosts] = useState([]);
     const firstName = useSelector(state => state.userLogin.firstName);
     const lastName = useSelector(state => state.userLogin.lastName);
     const registrationDate = useSelector(state => state.userLogin.registrationDate);
@@ -157,10 +158,31 @@ function UserProfilePage() {
       }
     };
 
+    const fetchTopPosts = async () => {
+      try {
+          const response = await fetch('http://127.0.0.1:5000/post-details/top', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            });
+          if (!response.ok) {
+              throw new Error('Failed to fetch top post data');
+          }
+          const data = await response.json();
+          console.log(data)
+          // setAllTopPosts(data);
+      } catch (error) {
+          console.error("Error fetching posts:", error);
+      }
+    };
+
     useEffect(() => {
         fetchUserData();
         fetchHistory();
         fetchDrafts();
+        // fetchTopPosts();
     }, []);
 
     const handleVerifyNow = () => {
@@ -209,6 +231,17 @@ function UserProfilePage() {
         )}
       </section>
 
+      {/* <section>
+        <h2>Top3 Posts</h2>
+        <ul>
+          {allTopPosts.map((post, index) => (
+            <Link to={`/post/${post.postId}`} key={index}>
+              <PostCard post={post} />
+            </Link>
+          ))}
+        </ul>
+      </section> */}
+
       <section className="history-section">
         <h2>Browsing History</h2>
         <ul>
@@ -230,6 +263,8 @@ function UserProfilePage() {
           ))}
         </ul>
       </section>
+
+      
     </div>
     </div>
   );
