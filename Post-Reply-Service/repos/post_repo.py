@@ -117,7 +117,14 @@ class PostRepository:
 
     def get_unpublished_posts_by_user(self, user_id):
         drafts = db.query(Post).filter_by(userId=user_id, status='Unpublished').all()
-        return drafts
+        top_posts_query = (db.query(Post, func.count(Reply.replyId).label('reply_count'))
+                           .join(Reply, Post.postId == Reply.postId)
+                           .filter(Post.userId == user_id, Post.isArchived == False)
+                           .group_by(Post.postId)
+                           .order_by(func.count(Reply.replyId).desc())
+                           .limit(3))
+        top_posts = top_posts_query.all()
+        return drafts, top_posts
 
     def get_hidden_posts_by_user(self, user_id):
         hidden_posts = db.query(Post).filter_by(userId=user_id, status='Hidden').all()

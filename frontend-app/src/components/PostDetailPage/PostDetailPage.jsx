@@ -95,7 +95,6 @@ export default function PostDetailPage({  }) {
             <h2>{postItem.title}</h2>
             <p>Posted By: {postItem.user.firstName} {postItem.user.lastName} on {postItem.dateCreated}</p>
             <p>Content: {postItem.content}</p>
-            <p>Status: {postItem.status}</p>
             <div>
                     {postItem.images != null && postItem.images.url.length > 0? (
                         <div>
@@ -125,19 +124,28 @@ export default function PostDetailPage({  }) {
             
             <br></br>
             
-            <h2>Replies:</h2>
-            <ul>
-                {postItem.replies.map((reply) => (
-                    <li key={reply.id}>
-                      <p>{reply.comment}</p>
-                      <p>comment by {reply.firstName} {reply.lastName} on {reply.dateCreated} </p>
-                    </li>
-                ))}
-            </ul>
-
-            <button onClick={toggleAddReply}>Reply to the Post</button>
-
-            <AddReplyPage open={showAddReply} onClose={toggleAddReply} postId={postId} fetchPost={fetchPost} />
+            <div>
+                {postItem.status === "Published" ? (
+                    <div>
+                        <h2>Replies:</h2>
+                        <ul>
+                            {postItem.replies.map((reply) => (
+                                <li key={reply.id}>
+                                <p>{reply.comment}</p>
+                                <p>comment by {reply.firstName} {reply.lastName} on {reply.dateCreated} </p>
+                                </li>
+                            ))}
+                        </ul>
+            
+                        <button onClick={toggleAddReply}>Reply to the Post</button>
+            
+                        <AddReplyPage open={showAddReply} onClose={toggleAddReply} postId={postId} fetchPost={fetchPost} />
+                    </div>
+                ): (
+                    <p></p>
+                )}
+            </div>
+            
 
             
         </div>

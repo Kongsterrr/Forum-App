@@ -129,6 +129,7 @@ class Top3PostsView(MethodView):
         top_posts = self.post_service.get_top_user_posts(user_id)
         result = [{
             'postId': post.Post.postId,
+            'content': post.Post.content,
             'title': post.Post.title,
             'replyCount': post.reply_count
         } for post in top_posts]
@@ -142,8 +143,12 @@ class AllUnpublishedPostsView(MethodView):
 
     @token_required
     def get(self, user_id, user_status):
-        drafts = self.post_service.get_unpublished_posts(user_id)
-        return jsonify([draft.serialize() for draft in drafts]), 200
+        drafts, posts = self.post_service.get_unpublished_posts(user_id)
+        return jsonify({'drafts': [draft.serialize() for draft in drafts], 'top': [{'postId': post.Post.postId,
+                                 'content': post.Post.content,
+                                 'title': post.Post.title,
+                                 'replyCount': post.reply_count,
+                                 } for post in posts]}), 200
 
 
 class AllBannedPostView(MethodView):
