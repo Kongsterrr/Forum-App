@@ -10,6 +10,7 @@ export default function PostDetailPage({  }) {
   const [postItem, setPostItem] = useState({
     title: "",
     content: "",
+    status: "",
     dateCreated: "",
     dateModified: "",
     images: {url: ""},
@@ -19,6 +20,7 @@ export default function PostDetailPage({  }) {
         lastName: "",
         profileImage: ""
     }
+
   });
 
   const [showAddReply, setShowAddReply] = useState(false);
@@ -47,6 +49,28 @@ export default function PostDetailPage({  }) {
     createViewHistory();
   }, []);
 
+  const publishPost = async () => {
+  try {
+    const response = await fetch(`http://127.0.0.1:5000/post_and_reply/${postId}/publish`, {
+      method: "PUT",
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Failed to publish post");
+    }
+   setPostItem(prevState => ({
+      ...prevState,
+      status: "Published"
+    }));
+    console.log("Post published successfully");
+  } catch (error) {
+    console.error("Error publishing post:", error);
+  }
+};
+
+
   const createViewHistory = async () => {
     try {
         const response = await fetch("http://127.0.0.1:5000/history/", {
@@ -70,7 +94,8 @@ export default function PostDetailPage({  }) {
             <Link to={`/home`}>Back to Home</Link>
             <h2>{postItem.title}</h2>
             <p>Posted By: {postItem.user.firstName} {postItem.user.lastName} on {postItem.dateCreated}</p>
-            <p>{postItem.content}</p>
+            <p>Content: {postItem.content}</p>
+            <p>Status: {postItem.status}</p>
             <div>
                     {postItem.images != null && postItem.images.url.length > 0? (
                         <div>
@@ -91,6 +116,11 @@ export default function PostDetailPage({  }) {
                         <p></p>
                     )}
             </div>
+
+            {postItem.status === "Unpublished" && (
+            <button onClick={publishPost}>Publish Post</button>
+            )}
+
             
             
             <br></br>

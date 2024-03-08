@@ -57,6 +57,7 @@ class PostDetailService:
             'title': post_data['title'],
             'content': post_data['content'],
             'images': post_data['images'],
+            'status': post_data['status'],
             'user': {
                 'firstName': user_data['firstName'],
                 'lastName': user_data['lastName'],
@@ -64,7 +65,8 @@ class PostDetailService:
             },
             'dateCreated': post_data['dateCreated'],
             'dateModified': post_data.get('dateModified'),
-            'replies': replies_list
+            'replies': replies_list,
+
         }
         print(aggregated_data)
 
