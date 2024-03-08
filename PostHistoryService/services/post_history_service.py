@@ -19,6 +19,9 @@ class PostHistoryService:
         for history in histories:
             post_response = requests.get(self.post_reply_url + '/' + str(history["postId"]))
             post = post_response.json()
+            if "postId" not in post:
+                continue
+            print(post)
 
             userId = post["userId"]
             user_response = requests.get(self.user_service_url + '/' + str(userId))
