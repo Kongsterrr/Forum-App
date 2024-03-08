@@ -95,6 +95,7 @@ class PostDetailService:
                         'lastName': user_data.get('lastName'),
                         'date': post['dateModified'] if post.get('dateModified') else post['dateCreated'],
                         'title': post['title'],
+                        'imgUrl': post['images']
                     }
                     aggregated_data_list.append(aggregated_data)
                 else:

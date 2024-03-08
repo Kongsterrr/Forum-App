@@ -39,9 +39,10 @@
   padding: 20px;
   margin-bottom: 20px;
   width: fit-content;
+  height: auto;
   position: absolute;
-  top: 100px;
-  left: 20px; /* Adjust the left position as needed */
+  top: 120px;
+  left: 60px;
 }
 
 .profile-section img {
@@ -51,7 +52,7 @@
 }
 
 .history-section {
-  margin-top: 20px;
+  padding: 0 40px;
 }
 
 .history-section h2 {
