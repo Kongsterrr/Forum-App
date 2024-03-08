@@ -264,6 +264,6 @@ class PostDetailService:
                 'title': post_detail_data['title'],
             }
             aggregated_data_list.append(aggregated_data)
-
+        print(aggregated_data_list)
         return aggregated_data_list
 
