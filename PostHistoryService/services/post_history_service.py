@@ -11,7 +11,6 @@ class PostHistoryService:
         self.post_reply_url = 'http://127.0.0.1:5000/post_and_reply'
         self.user_service_url = 'http://127.0.0.1:5000/users'
 
-
     def get_post_history(self, user_id):
         history_response = requests.get(self.history_url + '/' + str(user_id))
         histories = history_response.json()["histories"]
