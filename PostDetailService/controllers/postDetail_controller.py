@@ -44,5 +44,6 @@ class TopPostView(MethodView):
 
     @token_required
     def get(self, user_id, user_status):
+        print('im here')
         user_home = self.top_post_service.get_top_post_data()
         return jsonify(user_home), 200
