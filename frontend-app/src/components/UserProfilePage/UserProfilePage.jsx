@@ -152,8 +152,8 @@ function UserProfilePage() {
               throw new Error('Failed to fetch user data');
           }
           const data = await response.json();
-          setAllDraftPosts(data['drafts']);
-          setAllTopPosts(data['top']);
+          setAllDraftPosts(data);
+
 
       } catch (error) {
           console.error("Error fetching posts:", error);
