@@ -13,11 +13,13 @@ function UserProfilePage() {
     const [allHistoryPosts, setAllHistoryPosts] = useState([]);
     const [allDraftPosts, setAllDraftPosts] = useState([]);
     const [allTopPosts, setAllTopPosts] = useState([]);
+
     const firstName = useSelector(state => state.userLogin.firstName);
     const lastName = useSelector(state => state.userLogin.lastName);
     const registrationDate = useSelector(state => state.userLogin.registrationDate);
     const email = useSelector(state => state.userLogin.email);
     const profileImage = useSelector(state => state.userLogin.profileImageURL);
+
 
     const token = localStorage.getItem('token');
     const userStatus = useSelector(state => state.userLogin.userStatus);
@@ -109,6 +111,8 @@ function UserProfilePage() {
           lastName: userData.lastName,
           profileImageURL: userData.profileImageURL || default_url,
         };
+
+        localStorage.setItem('userProfileData', formattedUserData);
 
         // Update the data in redux store
         dispatch(setUserProfileData(formattedUserData));
@@ -291,16 +295,16 @@ function UserProfilePage() {
                 </ul>
             </section>
 
-            <section className="history-section">
-                <h2>Top 3 Posts</h2>
-                <ul>
-                    {allTopPosts.map((post, index) => (
-                        <Link to={`/post/${post.postId}`} key={index}>
-                            <PostCard post={post}/>
-                        </Link>
-                    ))}
-                </ul>
-            </section>
+            {/*<section className="history-section">*/}
+            {/*    <h2>Top 3 Posts</h2>*/}
+            {/*    <ul>*/}
+            {/*        {allTopPosts.map((post, index) => (*/}
+            {/*            <Link to={`/post/${post.postId}`} key={index}>*/}
+            {/*                <PostCard post={post}/>*/}
+            {/*            </Link>*/}
+            {/*        ))}*/}
+            {/*    </ul>*/}
+            {/*</section>*/}
 
 
         </div>

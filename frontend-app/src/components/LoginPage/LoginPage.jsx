@@ -22,7 +22,8 @@ function LoginPage() {
     const decodedToken = jwtDecode(token);
     const user_status = decodedToken.user_status;
     localStorage.setItem('user_status', user_status);
-    const user_id = decodedToken.user_id; 
+    const user_id = decodedToken.user_id;
+    localStorage.setItem('user_id', user_id);
 
 
     dispatch(setUserLoginData(user_status, user_id))
